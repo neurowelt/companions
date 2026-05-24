@@ -6,7 +6,7 @@
 #   scripts/bump-version.sh patch | minor | major
 #   scripts/bump-version.sh set X.Y.Z
 #   scripts/bump-version.sh changed [BASE [HEAD]]
-#       exit 0 if shipping paths changed (skills/, commands/, mcp.json, .claude-plugin/, .agents/)
+#       exit 0 if shipping paths changed (skills/, commands/, .mcp.json, .claude-plugin/, .agents/)
 #       exit 1 if nothing relevant changed (README, scripts/, .github/ don't count)
 #       defaults: BASE=HEAD~1, HEAD=HEAD
 #
@@ -93,7 +93,7 @@ if [[ "$mode" == "changed" ]]; then
   base="${1:-HEAD~1}"
   head="${2:-HEAD}"
   changed="$(git -C "$ROOT" diff --name-only "$base" "$head" -- \
-    'skills' 'commands' 'mcp.json' '.claude-plugin' '.agents' 2>/dev/null || true)"
+    'skills' 'commands' '.mcp.json' '.claude-plugin' '.agents' 2>/dev/null || true)"
   if [[ -n "$changed" ]]; then
     echo "shipping-path changes between $base..$head:"
     echo "$changed" | sed 's/^/  /'
