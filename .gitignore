@@ -1,0 +1,4 @@
+.worktrees/
+.private-journal/
+.DS_Store
+.env

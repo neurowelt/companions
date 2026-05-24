@@ -1,0 +1,44 @@
+name: Auto-bump version
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  bump:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Configure git identity
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Install jq
+        run: sudo apt-get update && sudo apt-get install -y jq
+
+      - name: Bump if shipping paths changed
+        run: |
+          set -euo pipefail
+          BASE="${{ github.event.before }}"
+          HEAD="${{ github.sha }}"
+          ZERO="0000000000000000000000000000000000000000"
+
+          if [ "$BASE" = "$ZERO" ] || ! git rev-parse -q --verify "$BASE^{commit}" >/dev/null; then
+            echo "no resolvable before-SHA; comparing HEAD~1..HEAD instead"
+            BASE="HEAD~1"
+          fi
+
+          if ./scripts/bump-version.sh changed "$BASE" "$HEAD"; then
+            ./scripts/bump-version.sh --message-suffix " [skip ci]" patch
+            git push origin HEAD --follow-tags
+          else
+            echo "no shipping-path changes; skipping bump"
+          fi

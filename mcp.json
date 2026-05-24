@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "companions": {
+      "type": "http",
+      "url": "https://api.humx.ai/mcp",
+      "headers": {
+        "Authorization": "ApiKey ${COMPANIONS_API_KEY}"
+      }
+    }
+  }
+}

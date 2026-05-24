@@ -1,0 +1,14 @@
+---
+description: Consult one or more expert personas via the Companions MCP.
+argument-hint: "<prompt> [mode] [main] [participants]"
+---
+
+The user has invoked `/companions-consult $ARGUMENTS`.
+
+1. Parse `$ARGUMENTS`. The first segment is the **prompt**. Optional trailing tokens may specify `mode=...`, `main=...`, `participants=name1,name2`. If the prompt is missing, ask the user what they want to consult about.
+2. If `mode` is not specified, pick one using the table in the `consulting-experts` skill (question shape → mode).
+3. If `main` or `participants` are needed by the chosen mode and not specified, call `discover` first and ask the user to pick — or, when the choice is obvious from the prompt, default and tell the user what you chose.
+4. Call `consult` with the resolved arguments. Present the result with per-speaker attribution (see the skill for which `content` field to read per mode).
+5. Trailing one-liner: "(consulted N experts)" if multi-expert.
+
+If the call returns 401 or the env var is unset, run the same fallback as `/companions-setup` instead.

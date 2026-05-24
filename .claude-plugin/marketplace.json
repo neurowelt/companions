@@ -1,0 +1,19 @@
+{
+  "name": "companions-marketplace",
+  "description": "Marketplace for the Companions MCP plugin",
+  "owner": {
+    "name": "humx.ai",
+    "url": "https://rejestr.io/krs/1143291/humx"
+  },
+  "plugins": [
+    {
+      "name": "companions",
+      "description": "Consult a panel of expert personas via MCP. discover / consult / check_balance.",
+      "version": "0.1.0",
+      "source": "./",
+      "author": {
+        "name": "humx.ai"
+      }
+    }
+  ]
+}
