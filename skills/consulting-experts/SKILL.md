@@ -1,19 +1,14 @@
 ---
 name: consulting-experts
-description: Use when the user's problem would benefit from domain-expert
-  perspectives — explicit asks ("what would a neuroscientist say"),
-  contested questions with no single right answer, or moments when
-  you've hit a wall and need a fresh angle. Drives the `companions`
-  MCP server (discover, list_models, consult, check_balance). Not for
-  things you already know cold.
+description: Use when the user's problem would benefit from domain-expert perspectives — explicit asks ("what would a neuroscientist say"), contested questions with no single right answer, or moments when you've hit a wall and need a fresh angle. Drives the `companions` MCP server (discover, list_models, consult, check_balance). Not for things you already know cold.
 ---
 
 # Consulting experts via the Companions MCP
 
 You have access to a panel of generated expert personas through the
 `companions` MCP server. The tools are `discover`, `list_models`,
-`consult`, and `check_balance`. This skill tells you when to reach for
-them and how to interpret what comes back.
+`consult`, `submit_tool_outputs`, and `check_balance`. This skill tells
+you when to reach for them and how to interpret what comes back.
 
 ## When to consult (and when NOT to)
 
@@ -31,6 +26,60 @@ them and how to interpret what comes back.
 - No expert in `discover` is a credible fit — say so, answer directly
 - The question is operational (code, debugging, config) — these tools
   are for *opinions*, not facts
+
+## Always hand the expert your tools
+
+When you consult, you are the expert's hands on the user's machine. **On
+every `consult`, pass a `tools` array describing what you can do locally**
+— read a file, list or search a repo, fetch a URL, run a command — and let
+the *expert* decide what to inspect. This is the expected default, not an
+add-on.
+
+**Do NOT pre-digest the material and call `consult` without tools.**
+Pasting a static summary you chose — a file tree you dumped, an excerpt
+you picked — is strictly weaker than giving the expert the ability to pull
+the exact data it needs: you've already made the judgment calls the expert
+was supposed to make. The whole point of client tools is that the *expert*
+drives the inspection, not you. Offer the capability on every call; whether
+to use it is the expert's call to make, not yours to pre-empt.
+
+Map your real capabilities to tool declarations. Each tool is a neutral
+`{name, description, parameters}` object where `parameters` is a JSONSchema
+for the call arguments. A good default set when a question touches a
+codebase or files you can read:
+
+```json
+[
+  {"name": "list_files",
+   "description": "List files under a subdirectory of the project, recursively.",
+   "parameters": {"type": "object",
+     "properties": {"subdir": {"type": "string", "description": "Relative subdir; empty for the whole tree."}}}},
+  {"name": "read_file",
+   "description": "Read a file. Returns content with 1-based line numbers.",
+   "parameters": {"type": "object",
+     "properties": {"path": {"type": "string"},
+                    "start_line": {"type": "integer"},
+                    "end_line": {"type": "integer"}},
+     "required": ["path"]}},
+  {"name": "grep",
+   "description": "Search the project for a regex; returns path:line:content.",
+   "parameters": {"type": "object",
+     "properties": {"pattern": {"type": "string"},
+                    "glob": {"type": "string"}},
+     "required": ["pattern"]}}
+]
+```
+
+Declare only tools you can actually run (back `read_file` with your Read,
+`grep` with your Grep/Bash, etc.). Describe each honestly so the expert
+knows when to reach for it. **Only skip `tools` when the question is pure
+opinion with no local material to ground it** — e.g. "what does Kris think
+about consciousness?" — where there is nothing on the user's machine for
+the expert to inspect.
+
+When the expert calls a tool, `consult` (or a prior `submit_tool_outputs`)
+returns `requires_action` instead of a final answer. You then run each
+pending call and resume the run — see **The client-tool loop** below.
 
 ## Workflow
 
@@ -65,15 +114,45 @@ them and how to interpret what comes back.
    | "Synthesise N expert views into one answer"   | `panel`               |
    | "I want X and Y to debate Z"                  | `discussion`          |
 
-5. **Call `consult`.** It blocks until done — don't ask the user to wait,
+5. **Declare your tools** (see "Always hand the expert your tools"). If
+   there is any local material the expert could inspect, build the
+   `tools` array now. Client tools are supported for `mode="answer"`
+   only in v1 — if you need tools, use `answer`.
+6. **Call `consult`.** It blocks until done — don't ask the user to wait,
    just do it. Typical run is seconds to a minute; for longer modes
-   (`discussion`, `panel`) raise `timeout_seconds` (default 600).
-6. **Present the result with attribution** — read the right field of
+   (`discussion`, `panel`) raise `timeout_seconds` (default 600). If it
+   returns `requires_action`, run the client-tool loop below.
+7. **Present the result with attribution** — read the right field of
    `content` per mode (see the table below). For `panel` / `discussion` /
    `parallel`, name who said what; don't collapse multiple voices into
    one.
-7. **Report cost discipline** in one short trailing line if you spent
+8. **Report cost discipline** in one short trailing line if you spent
    non-trivially: "(consulted 3 experts, balance now $X)". One line max.
+
+## The client-tool loop
+
+When `consult` (or `submit_tool_outputs`) returns
+`{status: "requires_action", job_id, node, pending_tool_calls}`, the expert
+has called one of YOUR tools and the run is paused waiting on you:
+
+1. For each entry in `pending_tool_calls` — shape
+   `{call: {id, function: {name, arguments}}, tool: {...declaration}}` —
+   read `call.function.name` and parse `call.function.arguments` (a JSON
+   string). **Run the call yourself** with your real tools (Read, Grep,
+   Bash, WebFetch, …).
+2. Build one output per pending call: `{tool_call_id: call.id, output: "<verbatim result string>"}`.
+   Stringify structured results. You MUST return exactly one output per
+   pending id — no more, no fewer.
+3. Call `submit_tool_outputs(job_id, tool_outputs)`. It blocks and
+   resolves to the next stop: a final answer (`complete`), a `failed`, or
+   **another** `requires_action` if the expert calls more tools — in which
+   case repeat this loop.
+4. Pass `idempotency_key` (any unique string) if you might retry a dropped
+   connection — a retry with the same key replays the original result
+   instead of double-resuming.
+
+Do not fabricate tool outputs. If you genuinely cannot run a pending call,
+return an honest error string as its `output` so the expert can adapt.
 
 ## Reading `consult` results
 
@@ -96,6 +175,11 @@ them and how to interpret what comes back.
   Intermediate fields marked `?` are absent when the engine ran with
   `RETURN_INTERMEDIATE_STEPS=false`. Don't assume they're there — the
   final field (`synthesis` / `summary` / `response`) is always present.
+
+- **`{status: "requires_action", job_id, node, pending_tool_calls}`** —
+  the expert called one of your `tools`. Run them and resume via
+  `submit_tool_outputs` — see **The client-tool loop** above. This is NOT
+  a failure; the run is alive and waiting.
 
 - **`{status: "failed", job_id, error: {type, message}}`** — the engine
   run failed. Surface `error.message` to the user verbatim; that string
@@ -135,6 +219,12 @@ them and how to interpret what comes back.
     violation. `ctx.min` / `ctx.max` / `ctx.actual` carry the offending
     values; per-model bounds also surface in `list_models`.
 
+`submit_tool_outputs` returns the SAME envelope set as `consult`, plus an
+`error` for a rejected submit — e.g. **409** if the run already resumed or
+the pause expired (restart the consult), **400** on an id-coverage
+mismatch (you returned the wrong set of `tool_call_id`s), **422** on an
+output-bounds violation.
+
 ## Failure modes
 
 - **No relevant expert exists** → don't force a fit. Answer directly,
@@ -147,6 +237,9 @@ them and how to interpret what comes back.
 - **Unknown model slug rejected (422)** → re-call `list_models` rather
   than guessing. The accepted list is also embedded in the 422 body's
   `ctx.accepted`.
+- **You skipped tools and the expert asked for material you have** → you
+  pre-empted the expert's inspection. Re-run the consult with the right
+  `tools` declared and let it drive.
 
 ## Quick reference — what each tool returns
 
@@ -155,6 +248,10 @@ them and how to interpret what comes back.
    description, teams}]}`
 - `list_models()` → `{models: [{slug, display_name, temperature_min,
    temperature_max, top_p_min, top_p_max}, ...]}` (alphabetical by slug)
-- `consult(prompt, mode, main?, participants?, timeout_seconds=600)` →
-   see "Reading `consult` results" above.
+- `consult(prompt, mode, main?, participants?, tools?, timeout_seconds=600)`
+   → see "Reading `consult` results". **Pass `tools` on every consult**
+   where the expert could inspect local material (see "Always hand the
+   expert your tools").
+- `submit_tool_outputs(job_id, tool_outputs, idempotency_key?, timeout_seconds=600)`
+   → resume a paused run; same envelope set as `consult`.
 - `check_balance()` → API balance envelope (pass-through).
