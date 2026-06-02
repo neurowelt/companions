@@ -12,4 +12,4 @@ The user has invoked `/companions-consult $ARGUMENTS`.
 5. Call `consult` with the resolved arguments. If it returns `requires_action`, run each pending tool call yourself and resume with `submit_tool_outputs`, repeating until it resolves (see the skill's "client-tool loop"). Present the result with per-speaker attribution (see the skill for which `content` field to read per mode).
 6. Trailing one-liner: "(consulted N experts)" if multi-expert.
 
-If the call returns 401 or the env var is unset, run the same fallback as `/companions-setup` instead.
+If the call returns 401 (not authenticated / session expired), run the same fallback as `/companions-setup` instead.

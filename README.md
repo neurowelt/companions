@@ -14,12 +14,12 @@ Then install the plugin:
 /plugin install companions@companions-marketplace
 ```
 
-After install, set your API key and verify the connection:
+After install, sign in and verify the connection:
 ```
 /companions-setup
 ```
 
-The setup command walks you through obtaining a key, exporting `COMPANIONS_API_KEY` in your shell, and restarting Claude Code so the MCP transport picks it up.
+The `companions` MCP authenticates with OAuth — there's no API key to manage. Run `/mcp`, pick `companions` → **Authenticate**, and sign in through your browser (Google or email). Claude Code stores the token in your OS keychain and refreshes it automatically. `/companions-setup` walks you through this if you're not signed in yet.
 
 ## First-time use
 
@@ -31,7 +31,7 @@ The setup command walks you through obtaining a key, exporting `COMPANIONS_API_K
 
 | Command                | What it does                                                                   |
 |------------------------|--------------------------------------------------------------------------------|
-| `/companions-setup`    | Check auth status and walk the user through obtaining + setting the API key.   |
+| `/companions-setup`    | Check auth status and walk the user through the OAuth browser sign-in.         |
 | `/companions-discover` | Invoke the `discover` MCP tool and present the available teams + companions.   |
 | `/companions-consult`  | Invoke the `consult` tool with a user-supplied prompt and (optional) mode.     |
 | `/companions-balance`  | Invoke `check_balance` and print remaining credit.                             |

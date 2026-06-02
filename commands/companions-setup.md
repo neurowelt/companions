@@ -1,5 +1,5 @@
 ---
-description: Verify the Companions API key is set and the MCP is reachable; otherwise walk the user through setup.
+description: Verify the Companions MCP is authenticated and reachable; otherwise walk the user through the OAuth sign-in.
 ---
 
 # Companions — setup check
@@ -7,23 +7,37 @@ description: Verify the Companions API key is set and the MCP is reachable; othe
 Call the `check_balance` MCP tool and report the first matching outcome:
 
 - Returns a balance envelope → say "Companions is set up. Balance: $X." Done.
-- Returns 401 / authentication error, **or** the MCP request fails because the `Authorization` header expanded to an empty/missing key → the env var is either unset or the key is invalid. Print the "Setup walkthrough" below (note: if the user already had a key, they need to replace it).
-- Network / 5xx error → the key is fine but the service is unreachable. Print the service URL (`https://api.humx.ai/mcp`) and ask the user to confirm they're online.
+- Returns 401 / authentication error, **or** the MCP server shows as needing
+  authentication / not connected → the user has not signed in yet (or their
+  session expired). Print the "Setup walkthrough" below.
+- Network / 5xx error → authentication is fine but the service is unreachable.
+  Print the service URL (`https://api.humx.ai/mcp`) and ask the user to confirm
+  they're online.
 
-Do not try to read `COMPANIONS_API_KEY` from the shell — the key is a secret and must not be echoed. The MCP call itself is the auth check.
+This MCP authenticates with OAuth — there is no API key and no environment
+variable to set. The MCP call itself is the auth check; never ask the user to
+paste a token or key.
 
 ## Setup walkthrough
 
-If the user has no key:
+If the user is not authenticated:
 
-1. Contact the team to acquire your API key (currently the only way).
-3. Export it in your shell. For zsh / bash add this line to `~/.zshrc` or `~/.bashrc`:
-   ```bash
-   export COMPANIONS_API_KEY=cmp_live_...
-   ```
-4. Reload your shell (`source ~/.zshrc`) and **restart Claude Code** so the new env is picked up by the MCP transport.
+1. Run `/mcp` in Claude Code. The `companions` server is flagged as needing
+   authentication.
+2. Select `companions` → **Authenticate** (or "Login"). Claude Code opens your
+   browser.
+3. Sign in (Google or email) and approve the consent screen at
+   `https://login.humx.ai`. The browser shows a success page; return to Claude
+   Code.
+4. Claude Code stores the token in your OS keychain and reconnects
+   automatically — no restart needed. It refreshes the token on its own when it
+   expires.
 5. Re-run `/companions-setup` to verify.
 
-If the user already has a key but it's invalid, the only step is to regenerate at the dashboard and replace the export line.
+If the session is simply expired, the same `/mcp` → Authenticate flow re-issues
+a token. To switch accounts, choose **Clear authentication** in the `/mcp` menu
+first, then authenticate again.
 
-> The plugin sends `Authorization: ApiKey ${COMPANIONS_API_KEY}` on every MCP request. The key never leaves your machine via this plugin's code — only via the MCP request itself, which goes directly to `api.humx.ai`.
+> The plugin ships no credentials. Authentication is handled entirely by Claude
+> Code's built-in MCP OAuth client against `api.humx.ai` / `auth.humx.ai`; the
+> token lives in your keychain, not in this plugin.
