@@ -1,13 +1,10 @@
-# Companions Plugin
-
-Consult Copmanions API for expert knowledge and advanced reasoning. The plugin bundles:
-- `companions` MCP server (hosted at `https://api.humx.ai/mcp`)
-- `consultin-experts` skill that explains when to reach for the MCP
-- several commands for direct usage
+# Companions
 
 Companions API is perfect for use when a problem genuinely benefits from domain-expert perspectives — explicit asks, contested questions, or moments when you've hit a wall.
 
-Currently supported integrations:
+In order to interact with Companions API we provide an MCP server hosted at `https://api.humx.ai/mcp` that your AI harness of choice can interact with.
+
+We currently support the following integrations:
 - [Claude Code](#claude-code)
 - [Claude Desktop](#claude-desktop)
 
@@ -17,7 +14,7 @@ More integrations coming soon!
 
 Add the marketplace:
 ```
-/plugin marketplace add neurowelt/companions-plugin
+/plugin marketplace add neurowelt/companions
 ```
 
 Then install the plugin:
