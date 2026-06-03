@@ -1,8 +1,19 @@
 # Companions Plugin
 
-Consult Copmanions API in Claude Code. The plugin bundles the `companions` MCP server (hosted at `https://api.humx.ai/mcp`) and a skill that nudges Claude to reach for it when a problem genuinely benefits from domain-expert perspectives — explicit asks, contested questions, or moments when you've hit a wall.
+Consult Copmanions API for expert knowledge and advanced reasoning. The plugin bundles:
+- `companions` MCP server (hosted at `https://api.humx.ai/mcp`)
+- `consultin-experts` skill that explains when to reach for the MCP
+- several commands for direct usage
 
-## Installation for Claude Code
+Companions API is perfect for use when a problem genuinely benefits from domain-expert perspectives — explicit asks, contested questions, or moments when you've hit a wall.
+
+Currently supported integrations:
+- [Claude Code](#claude-code)
+- [Claude Desktop](#claude-desktop)
+
+More integrations coming soon!
+
+## Claude Code
 
 Add the marketplace:
 ```
@@ -14,24 +25,22 @@ Then install the plugin:
 /plugin install companions@companions-marketplace
 ```
 
-After install, sign in and verify the connection:
+After installation, run the setup command for instructions on authentication:
 ```
 /companions-setup
 ```
 
-The `companions` MCP authenticates with OAuth — there's no API key to manage. Run `/mcp`, pick `companions` → **Authenticate**, and sign in through your browser (Google or email). Claude Code stores the token in your OS keychain and refreshes it automatically. `/companions-setup` walks you through this if you're not signed in yet.
+Or go straight to `/mcp` and navigate to `companions` MCP, where authentication process can be triggered via **Authenticate**.
 
-## First-time use
+## Claude Desktop
 
-- `/companions-setup` — check auth, walk through setup if needed
-- `/companions-discover` — list the teams and companions you can address
-- `/companions-consult "<prompt>"` — consult one or more experts on a question
+In your **Claude Desktop** application go to **Customize** > **Connectors**. Click the "**+**" icon and choose **Add custom connector**. Fill out the fields:
+- **Name**: Companions
+- **MCP URL**: https://api.humx.ai/mcp
 
-## Commands reference
+Confirm by clicking **Add**. Remember to enable each tool for that MCP by clicking the slider next to tool names.
 
-| Command                | What it does                                                                   |
-|------------------------|--------------------------------------------------------------------------------|
-| `/companions-setup`    | Check auth status and walk the user through the OAuth browser sign-in.         |
-| `/companions-discover` | Invoke the `discover` MCP tool and present the available teams + companions.   |
-| `/companions-consult`  | Invoke the `consult` tool with a user-supplied prompt and (optional) mode.     |
-| `/companions-balance`  | Invoke `check_balance` and print remaining credit.                             |
+Check the connection simply by asking the chat:
+```
+Please check my Companions balance
+```
