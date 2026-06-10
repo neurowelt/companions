@@ -18,6 +18,7 @@
 #
 # Updates version fields in:
 #   .claude-plugin/plugin.json        .version
+#   .codex-plugin/plugin.json        .version
 #   .claude-plugin/marketplace.json   .plugins[0].version
 #   .agents/plugins/marketplace.json  .plugins[0].version   (added if missing)
 #
@@ -29,8 +30,10 @@ ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 
 MANIFESTS=(
   ".claude-plugin/plugin.json::.version"
+  ".codex-plugin/plugin.json::.version"
   ".claude-plugin/marketplace.json::.plugins[0].version"
   ".agents/plugins/marketplace.json::.plugins[0].version"
+
 )
 
 CANONICAL=".claude-plugin/plugin.json"
