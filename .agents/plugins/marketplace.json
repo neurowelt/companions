@@ -8,14 +8,13 @@
       "name": "companions",
       "source": {
         "source": "local",
-        "path": "./"
+        "path": "./plugins/companions"
       },
       "policy": {
         "installation": "AVAILABLE",
         "authentication": "ON_INSTALL"
       },
-      "category": "Productivity",
-      "version": "0.1.7"
+      "category": "Productivity"
     }
   ]
 }

@@ -6,7 +6,7 @@
 #   scripts/bump-version.sh patch | minor | major
 #   scripts/bump-version.sh set X.Y.Z
 #   scripts/bump-version.sh changed [BASE [HEAD]]
-#       exit 0 if shipping paths changed (skills/, commands/, .mcp.json, .claude-plugin/, .agents/)
+#       exit 0 if shipping paths changed (plugins/companions/, .claude-plugin/, .agents/)
 #       exit 1 if nothing relevant changed (README, scripts/, .github/ don't count)
 #       defaults: BASE=HEAD~1, HEAD=HEAD
 #
@@ -17,10 +17,9 @@
 #   --message-suffix S  append S to the commit message (e.g. " [skip ci]")
 #
 # Updates version fields in:
-#   .claude-plugin/plugin.json        .version
-#   .codex-plugin/plugin.json        .version
-#   .claude-plugin/marketplace.json   .plugins[0].version
-#   .agents/plugins/marketplace.json  .plugins[0].version   (added if missing)
+#   plugins/companions/.claude-plugin/plugin.json .version
+#   plugins/companions/.codex-plugin/plugin.json  .version
+#   .claude-plugin/marketplace.json              .plugins[0].version
 #
 # Then creates commit "chore: bump version to vX.Y.Z" and annotated tag vX.Y.Z.
 # Does not push — prints the push command for you to run.
@@ -29,14 +28,12 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 
 MANIFESTS=(
-  ".claude-plugin/plugin.json::.version"
-  ".codex-plugin/plugin.json::.version"
+  "plugins/companions/.claude-plugin/plugin.json::.version"
+  "plugins/companions/.codex-plugin/plugin.json::.version"
   ".claude-plugin/marketplace.json::.plugins[0].version"
-  ".agents/plugins/marketplace.json::.plugins[0].version"
-
 )
 
-CANONICAL=".claude-plugin/plugin.json"
+CANONICAL="plugins/companions/.claude-plugin/plugin.json"
 CANONICAL_JQ=".version"
 
 usage() {
@@ -96,7 +93,7 @@ if [[ "$mode" == "changed" ]]; then
   base="${1:-HEAD~1}"
   head="${2:-HEAD}"
   changed="$(git -C "$ROOT" diff --name-only "$base" "$head" -- \
-    'skills' 'commands' '.mcp.json' '.claude-plugin' '.agents' 2>/dev/null || true)"
+    'plugins/companions' '.claude-plugin' '.agents' 2>/dev/null || true)"
   if [[ -n "$changed" ]]; then
     echo "shipping-path changes between $base..$head:"
     echo "$changed" | sed 's/^/  /'
