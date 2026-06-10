@@ -1,18 +1,18 @@
 {
-    "name": "companions",
-    "description": "Consult a panel of generated expert personas. Bundles the companions MCP server (discover, consult, check_balance) and a skill that nudges your agent to reach for it when a problem benefits from domain-expert perspectives — explicit asks, contested questions, or moments when you've hit a wall.",
-    "version": "0.1.5",
-    "author": {
-        "name": "humx.ai"
-    },
-    "license": "All rights reserved",
-    "keywords": [
-        "companions",
-        "experts",
-        "consult",
-        "mcp",
-        "multi-perspective",
-        "second-opinion",
-        "deliberation"
-    ]
+  "name": "companions",
+  "description": "Consult a panel of generated expert personas. Bundles the companions MCP server (discover, consult, check_balance) and a skill that nudges your agent to reach for it when a problem benefits from domain-expert perspectives — explicit asks, contested questions, or moments when you've hit a wall.",
+  "version": "0.1.6",
+  "author": {
+    "name": "humx.ai"
+  },
+  "license": "All rights reserved",
+  "keywords": [
+    "companions",
+    "experts",
+    "consult",
+    "mcp",
+    "multi-perspective",
+    "second-opinion",
+    "deliberation"
+  ]
 }
