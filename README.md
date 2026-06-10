@@ -8,6 +8,7 @@ To connect your harness of choice follow one of these guides:
 - [Claude Code](#claude-code)
 - [Claude Desktop](#claude-desktop)
 - [Hermes Agent](#hermes-agent)
+- [Codex CLI](#codex-cli)
 
 ## Claude Code
 
@@ -42,3 +43,7 @@ Connecting MCP to Hermes is easiest done using the following command:
 ```bash
 hermes mcp add --url https://api.humx.ai/mcp --auth oauth companions
 ```
+
+## Codex CLI
+
+You can add the marketplace by using `/plugins` command within Codex CLI, choosing **Add Marketplace** and pasting the link to this repository. Codex will automatically open browser's window for authentication.
