@@ -4,11 +4,10 @@ Companions API is perfect for use when a problem genuinely benefits from domain-
 
 In order to interact with Companions API we provide an MCP server hosted at `https://api.humx.ai/mcp` that your AI harness of choice can interact with.
 
-We currently support the following integrations:
+To connect your harness of choice follow one of these guides:
 - [Claude Code](#claude-code)
 - [Claude Desktop](#claude-desktop)
-
-More integrations coming soon!
+- [Hermes Agent](#hermes-agent)
 
 ## Claude Code
 
@@ -22,12 +21,7 @@ Then install the plugin:
 /plugin install companions@companions-marketplace
 ```
 
-After installation, run the setup command for instructions on authentication:
-```
-/companions-setup
-```
-
-Or go straight to `/mcp` and navigate to `companions` MCP, where authentication process can be triggered via **Authenticate**.
+After installation use `/mcp` command and navigate to `companions` MCP, where authentication process can be triggered via **Authenticate** flow.
 
 ## Claude Desktop
 
@@ -40,4 +34,11 @@ Confirm by clicking **Add**. Remember to enable each tool for that MCP by clicki
 Check the connection simply by asking the chat:
 ```
 Please check my Companions balance
+```
+
+## Hermes Agent
+
+Connecting MCP to Hermes is easiest done using the following command:
+```bash
+hermes mcp add --url https://api.humx.ai/mcp --auth oauth companions
 ```
