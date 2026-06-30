@@ -9,4 +9,4 @@ Call the `list_models` MCP tool. Present the result as a short table:
 
 Slugs outside this list are rejected at the wire with a 422; `ctx.accepted` on that error carries the same set.
 
-If the call returns 401 (not authenticated / session expired), run the same fallback as `/companions-setup` instead.
+If the call returns 401 (not authenticated / session expired), run the same fallback as `/setup` instead.
