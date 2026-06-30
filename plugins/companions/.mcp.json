@@ -1,8 +1,8 @@
 {
-  "mcpServers": {
-    "companions": {
-      "type": "http",
-      "url": "https://api.humx.ai/mcp"
+    "mcpServers": {
+        "companions": {
+            "type": "http",
+            "url": "https://api.humx.ai/mcp"
+        }
     }
-  }
 }

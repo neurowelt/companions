@@ -1,20 +1,20 @@
 {
-  "name": "companions-marketplace",
-  "interface": {
-    "displayName": "Companions"
-  },
-  "plugins": [
-    {
-      "name": "companions",
-      "source": {
-        "source": "local",
-        "path": "./plugins/companions"
-      },
-      "policy": {
-        "installation": "AVAILABLE",
-        "authentication": "ON_INSTALL"
-      },
-      "category": "Productivity"
-    }
-  ]
+    "name": "companions-marketplace",
+    "interface": {
+        "displayName": "Companions"
+    },
+    "plugins": [
+        {
+            "name": "companions",
+            "source": {
+                "source": "local",
+                "path": "./plugins/companions"
+            },
+            "policy": {
+                "installation": "AVAILABLE",
+                "authentication": "ON_INSTALL"
+            },
+            "category": "Productivity"
+        }
+    ]
 }
