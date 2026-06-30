@@ -1,14 +1,35 @@
 ---
 name: consulting-experts
-description: Use when the user's problem would benefit from domain-expert perspectives — explicit asks ("what would a neuroscientist say"), contested questions with no single right answer, or moments when you've hit a wall and need a fresh angle. Drives the `companions` MCP server (discover, list_models, consult, check_balance). Not for things you already know cold.
+description: Use when the user's problem would benefit from domain-expert perspectives — explicit asks ("what would a neuroscientist say"), contested questions with no single right answer, or moments when you've hit a wall and need a fresh angle. Drives the `companions` MCP server (meet, list_companions, list_models, consult, check_balance). Not for things you already know cold.
 ---
 
 # Consulting experts via the Companions MCP
 
 You have access to a panel of generated expert personas through the
-`companions` MCP server. The tools are `discover`, `list_models`,
-`consult`, `submit_tool_outputs`, and `check_balance`. This skill tells
-you when to reach for them and how to interpret what comes back.
+`companions` MCP server. The tools are `meet`, `list_companions`,
+`list_models`, `consult`, `submit_reply`, `submit_tool_outputs`, and
+`check_balance`. This skill tells you when to reach for them and how to
+interpret what comes back.
+
+## Starting a new project — `meet` first
+
+The FIRST time you bring Companions to a project — and you have no
+remembered setup for it yet — call `meet` before anything else. Hand it a
+one-line portrait of the user and a self-portrait of yourself
+(`{model, harness, capabilities}`, including whether you keep memory across
+sessions). It hands back the 2-3 experts that fit this project, a
+`recommendation` block (your default companion set + mode) to persist, and
+a verbatim `working_agreement` — the durable rules for using this MCP.
+**Persist what it establishes and reuse it; don't re-`meet` for routine
+work.**
+
+`meet` is single-use per project. Once you have a remembered setup, reach
+experts directly with `consult`; when you're unsure which experts or mode
+fit a specific problem, ask for advice with `consult(main="ferryman", ...)`
+rather than re-meeting. If `meet` (or a turn-capable consult) needs more
+from you first, it returns `needs_reply` — author the missing detail and
+resume with `submit_reply(job_id, reply)`. The working agreement it returns
+is the source of truth for the rest; follow it.
 
 ## When to consult (and when NOT to)
 
@@ -23,7 +44,7 @@ you when to reach for them and how to interpret what comes back.
 - You already know the answer with high confidence — burning credits
   to launder your own thinking is a tax on the user
 - The user is mid-flow and a multi-second consultation breaks their loop
-- No expert in `discover` is a credible fit — say so, answer directly
+- No expert in `list_companions` is a credible fit — say so, answer directly
 - The question is operational (code, debugging, config) — these tools
   are for *opinions*, not facts
 
@@ -83,9 +104,13 @@ pending call and resume the run — see **The client-tool loop** below.
 
 ## Workflow
 
+**New project, no remembered setup?** Run `meet` first (see *Starting a new
+project — `meet` first*), then continue with the steps below. Skip it once
+you have a remembered Companions setup for this project.
+
 1. **First time this session:** call `check_balance`. If low, tell the
    user before spending. Cache the result for the session.
-2. **Call `discover`** to see what experts exist. Cache for the session.
+2. **Call `list_companions`** to see what experts exist. Cache for the session.
    You get `{teams, companions}`:
    - `companions` is a flat list of every expert the caller can use,
      each shaped `{id, name, kind, visibility, description, teams}`.
@@ -232,7 +257,7 @@ output-bounds violation.
   *would* help so they can generate one.
 - **Balance hits zero mid-task** → stop, tell the user, ask whether to
   top up or proceed without consultation.
-- **Unknown companion name** → re-call `discover` (the user may have
+- **Unknown companion name** → re-call `list_companions` (the user may have
   generated something new this session) before assuming the name is bad.
 - **Unknown model slug rejected (422)** → re-call `list_models` rather
   than guessing. The accepted list is also embedded in the 422 body's
@@ -243,8 +268,12 @@ output-bounds violation.
 
 ## Quick reference — what each tool returns
 
-- `discover()` → `{teams: [{id, name, visibility, members: [{id, name,
-   kind, description}]}], companions: [{id, name, kind, visibility,
+- `meet(user, self, project?, surface?)` → first-project handshake:
+   `{content (prose), recommendation, recommendation_grounded,
+   working_agreement}`. May return `needs_reply` — answer via
+   `submit_reply`. Single-use per project; persist what it establishes.
+- `list_companions()` → `{teams: [{id, name, visibility, members: [{id,
+   name, kind, description}]}], companions: [{id, name, kind, visibility,
    description, teams}]}`
 - `list_models()` → `{models: [{slug, display_name, temperature_min,
    temperature_max, top_p_min, top_p_max}, ...]}` (alphabetical by slug)
@@ -252,6 +281,9 @@ output-bounds violation.
    → see "Reading `consult` results". **Pass `tools` on every consult**
    where the expert could inspect local material (see "Always hand the
    expert your tools").
+- `submit_reply(job_id, reply, idempotency_key?, timeout_seconds=600)`
+   → answer a `needs_reply` (from `meet` or a turn-capable `consult`);
+   same envelope set as `consult`.
 - `submit_tool_outputs(job_id, tool_outputs, idempotency_key?, timeout_seconds=600)`
    → resume a paused run; same envelope set as `consult`.
 - `check_balance()` → API balance envelope (pass-through).

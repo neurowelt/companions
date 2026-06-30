@@ -8,7 +8,7 @@
   "plugins": [
     {
       "name": "companions",
-      "description": "Consult a panel of expert personas via MCP. discover / consult / check_balance.",
+      "description": "Consult a panel of expert personas via MCP. meet / consult / list_companions / check_balance.",
       "version": "0.1.9",
       "source": "./plugins/companions",
       "author": {
