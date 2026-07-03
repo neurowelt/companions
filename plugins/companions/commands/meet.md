@@ -1,15 +1,19 @@
 ---
-description: Run the Companions first-project handshake — introduce the system and establish your working set.
+description: Meet a Companion — have one companion introduce itself to your user, tailored to your project.
+argument-hint: "<companion> [note about the user and project]"
 ---
 
-Call the `meet` MCP tool to run the first-project handshake. Use it **once per project**, when you have not yet remembered a Companions setup for this project (for per-problem advice later, use `consult(main="ferryman", ...)` instead — do not re-meet).
+Introduce your user to a specific companion by calling the `meet` MCP tool. Use this when the user wants to *get to know* an expert — not to ask it a question (that's `consult`).
 
-1. Compose the two portraits:
-   - `user`: a one-line portrait of the user and the work. Infer it from the project and conversation; if the user or project is genuinely unclear, ask before calling.
-   - `self`: your own `{model, harness, capabilities}` — include whether you keep memory across sessions.
-   - Optionally pass `project` and `surface`.
-2. Call `meet`. If it returns `needs_reply`, author the missing detail and resume with `submit_reply(job_id, reply)`.
-3. On completion you get prose (Experts for you / How to work with us), a `recommendation` block (your default companion set + `default_mode`), and a verbatim `working_agreement` — the durable rules for using this MCP. Follow the working agreement for everything after.
-4. **Before persisting, confirm with the user** that they want you to remember this setup. If they agree, store the recommendation + working agreement as your working set and confirm what you stored — then suggest starting a fresh session now that the handshake is done.
+Arguments: `$ARGUMENTS` — the companion to meet (a name or `cmp_<uuid>` id), optionally followed by a note about the user and/or project. E.g. `/meet Kris` or `/meet Kris — solo dev building an MCP bridge`.
 
-If the call returns 401 (not authenticated / session expired), run the same fallback as `/setup` instead.
+1. Resolve the target companion from the arguments. If none was given, or you don't yet know which companions exist, run `list_companions` first (or `/handshake` if this is a fresh project) and ask the user which one they'd like to meet.
+2. Compose the call:
+   - `companion`: the name or `cmp_<uuid>` id from the arguments.
+   - `user`: a one-line portrait of the user and their work. Infer it from the conversation and any note in the arguments; keep it honest and short.
+   - Optionally pass `project` and your own `self` (`{model, harness, capabilities}`) so the introduction lands.
+3. Call `meet`. On completion you get the companion's first-person introduction (`content`) and the `companion: {id, name}` it resolved to. Relay the introduction to the user with attribution.
+   - `companion_not_found` (carries `visible`): show the visible names and let the user pick.
+   - `ambiguous` (carries `candidates`): re-call with the `cmp_<uuid>` id of the intended one.
+
+`meet` is a hello, not the bootstrap: it returns no recommendation and no working agreement, and it never needs `submit_reply`. If the call returns 401 (not authenticated / session expired), run the same fallback as `/setup`.

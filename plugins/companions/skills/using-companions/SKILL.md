@@ -1,35 +1,64 @@
 ---
-name: consulting-experts
-description: Use when the user's problem would benefit from domain-expert perspectives — explicit asks ("what would a neuroscientist say"), contested questions with no single right answer, or moments when you've hit a wall and need a fresh angle. Drives the `companions` MCP server (meet, list_companions, list_models, consult, check_balance). Not for things you already know cold.
+name: using-companions
+description: Use when the user's problem would benefit from domain-expert perspectives — explicit asks ("what would a neuroscientist say"), contested questions with no single right answer, or moments when you've hit a wall and need a fresh angle. Drives the `companions` MCP server (handshake, meet, list_companions, list_models, consult, check_balance). Not for things you already know cold.
 ---
 
-# Consulting experts via the Companions MCP
+# Using Companions — the expert-panel MCP
 
 You have access to a panel of generated expert personas through the
-`companions` MCP server. The tools are `meet`, `list_companions`,
+`companions` MCP server. The tools are `handshake`, `meet`, `list_companions`,
 `list_models`, `consult`, `submit_reply`, `submit_tool_outputs`, and
 `check_balance`. This skill tells you when to reach for them and how to
 interpret what comes back.
 
-## Starting a new project — `meet` first
+## Starting a new project — `handshake` first
 
 The FIRST time you bring Companions to a project — and you have no
-remembered setup for it yet — call `meet` before anything else. Hand it a
+remembered setup for it yet — call `handshake` before anything else. Hand it a
 one-line portrait of the user and a self-portrait of yourself
 (`{model, harness, capabilities}`, including whether you keep memory across
 sessions). It hands back the 2-3 experts that fit this project, a
 `recommendation` block (your default companion set + mode) to persist, and
 a verbatim `working_agreement` — the durable rules for using this MCP.
-**Persist what it establishes and reuse it; don't re-`meet` for routine
+**Persist what it establishes and reuse it; don't re-`handshake` for routine
 work.**
 
-`meet` is single-use per project. Once you have a remembered setup, reach
+`handshake` is single-use per project. Once you have a remembered setup, reach
 experts directly with `consult`; when you're unsure which experts or mode
 fit a specific problem, ask for advice with `consult(main="ferryman", ...)`
-rather than re-meeting. If `meet` (or a turn-capable consult) needs more
-from you first, it returns `needs_reply` — author the missing detail and
+rather than re-running it. If `handshake` (or a turn-capable consult) needs
+more from you first, it returns `needs_reply` — author the missing detail and
 resume with `submit_reply(job_id, reply)`. The working agreement it returns
 is the source of truth for the rest; follow it.
+
+## Getting to know a companion — `meet`
+
+`handshake` shakes hands with the **system**; `meet` introduces your **user**
+to one **companion**. When the user wants to *get to know* an expert — "who is
+Kris?", "tell me about the neuroscientist", "let me meet one of these" — don't
+paraphrase a persona from its `description`. Call `meet` and let the companion
+introduce **itself**: it speaks in the first person, warm and tailored to your
+user and project, and says how it would help. That is a truer introduction than
+anything you'd write about it.
+
+When you show the user the roster (from `handshake` or `list_companions`), you
+can offer this: suggest they `meet` any one that catches their eye. Then:
+
+- `meet(companion, user, project?, self?)` — `companion` is the name (or
+  `cmp_<uuid>` id) of the one to meet; `user` is a one-line portrait of your
+  user and their work; pass `project` and your `self` portrait when you have
+  them, so the introduction lands.
+- It returns `complete` with the companion's first-person intro (`content`, the
+  `answer` shape) and the `companion: {id, name}` it resolved to. Relay the
+  intro to the user with attribution. There is **no** recommendation block and
+  **no** working agreement — `meet` is a hello, not the bootstrap.
+- An unknown name returns `{status: "error", reason: "companion_not_found",
+  visible: [...]}` — show the visible names and let the user pick. A name shared
+  by two companions returns `{status: "ambiguous", candidates: [...]}` — re-call
+  with the `cmp_<uuid>` id of the intended one.
+
+`meet` is for *acquaintance*, `consult` is for *answers*. If the user actually
+has a question for the expert, use `consult`, not `meet`.
 
 ## When to consult (and when NOT to)
 
@@ -104,9 +133,9 @@ pending call and resume the run — see **The client-tool loop** below.
 
 ## Workflow
 
-**New project, no remembered setup?** Run `meet` first (see *Starting a new
-project — `meet` first*), then continue with the steps below. Skip it once
-you have a remembered Companions setup for this project.
+**New project, no remembered setup?** Run `handshake` first (see *Starting a
+new project — `handshake` first*), then continue with the steps below. Skip it
+once you have a remembered Companions setup for this project.
 
 1. **First time this session:** call `check_balance`. If low, tell the
    user before spending. Cache the result for the session.
@@ -268,10 +297,15 @@ output-bounds violation.
 
 ## Quick reference — what each tool returns
 
-- `meet(user, self, project?, surface?)` → first-project handshake:
-   `{content (prose), recommendation, recommendation_grounded,
+- `handshake(user, self, project?, surface?)` → first-project bootstrap
+   (agent → system): `{content (prose), recommendation, recommendation_grounded,
    working_agreement}`. May return `needs_reply` — answer via
    `submit_reply`. Single-use per project; persist what it establishes.
+- `meet(companion, user, project?, self?, surface?)` → introduce ONE companion
+   to your user (user → companion): `{content (the companion's first-person
+   intro), companion: {id, name}}`. No recommendation, no working agreement — a
+   hello. `companion_not_found` (with `visible`) / `ambiguous` (retry with the
+   id) on a bad name.
 - `list_companions()` → `{teams: [{id, name, visibility, members: [{id,
    name, kind, description}]}], companions: [{id, name, kind, visibility,
    description, teams}]}`
@@ -282,7 +316,7 @@ output-bounds violation.
    where the expert could inspect local material (see "Always hand the
    expert your tools").
 - `submit_reply(job_id, reply, idempotency_key?, timeout_seconds=600)`
-   → answer a `needs_reply` (from `meet` or a turn-capable `consult`);
+   → answer a `needs_reply` (from `handshake` or a turn-capable `consult`);
    same envelope set as `consult`.
 - `submit_tool_outputs(job_id, tool_outputs, idempotency_key?, timeout_seconds=600)`
    → resume a paused run; same envelope set as `consult`.
