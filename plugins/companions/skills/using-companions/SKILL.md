@@ -1,15 +1,15 @@
 ---
 name: using-companions
-description: Use when the user's problem would benefit from domain-expert perspectives — explicit asks ("what would a neuroscientist say"), contested questions with no single right answer, or moments when you've hit a wall and need a fresh angle. Drives the `companions` MCP server (handshake, meet, list_companions, list_models, consult, check_balance). Not for things you already know cold.
+description: Use when the user's problem would benefit from domain-expert perspectives — explicit asks ("what would a neuroscientist say"), contested questions with no single right answer, or moments when you've hit a wall and need a fresh angle. Drives the `companions` MCP server (handshake, meet, list_companions, describe_companions, list_teams, list_models, consult, check_balance). Not for things you already know cold.
 ---
 
 # Using Companions — the expert-panel MCP
 
 You have access to a panel of generated expert personas through the
 `companions` MCP server. The tools are `handshake`, `meet`, `list_companions`,
-`list_models`, `consult`, `submit_reply`, `submit_tool_outputs`, and
-`check_balance`. This skill tells you when to reach for them and how to
-interpret what comes back.
+`describe_companions`, `list_teams`, `list_models`, `consult`, `submit_reply`,
+`submit_tool_outputs`, and `check_balance`. This skill tells you when to reach
+for them and how to interpret what comes back.
 
 ## Starting a new project — `handshake` first
 
@@ -139,16 +139,22 @@ once you have a remembered Companions setup for this project.
 
 1. **First time this session:** call `check_balance`. If low, tell the
    user before spending. Cache the result for the session.
-2. **Call `list_companions`** to see what experts exist. Cache for the session.
-   You get `{teams, companions}`:
-   - `companions` is a flat list of every expert the caller can use,
-     each shaped `{id, name, kind, visibility, description, teams}`.
-     `consult` accepts either the *name* (readable) or the `cmp_<uuid>`
-     id (use when a name is ambiguous).
-   - `teams` lists teams the caller owns or can see, each shaped
-     `{id, name, visibility, members: [{id, name, kind, description}]}`.
-     When the user names a team, pass its members' names (or ids) as
-     `participants` to `consult`.
+2. **Call `list_companions`** to see what experts exist — the cheap directory.
+   Cache for the session. You get `{companions}`, a flat list where each entry
+   is `{id, name, kind, visibility, hint}` and `hint` is a one-line teaser (the
+   first sentence of the description). This is enough to confirm a companion
+   exists, check spelling, resolve ambiguity, and **shortlist** — `consult`
+   accepts either the *name* (readable) or the `cmp_<uuid>` id (use when a name
+   is ambiguous).
+   - **Need full profiles?** Once the hints let you shortlist a few candidates
+     (typically 2–5), call `describe_companions([...refs])` with their names or
+     ids. It returns `{companions, errors}` where each resolved entry carries
+     the **full, untruncated** `description` plus its `teams`. This is a cheap
+     catalogue read — no model call. (For a warm first-person introduction
+     instead of text, `meet` a companion — that one *is* a live model call.)
+   - **Need team rosters?** Call `list_teams` → `{teams: [{id, name, visibility,
+     members: [{id, name, kind}]}]}`. When the user names a team, pass its
+     members' names (or ids) as `participants` to `consult`.
 3. **(Optional) Call `list_models`** if you're going to pass a `model`
    override anywhere it's accepted (e.g. directly via the API). The
    response is `{models: [{slug, display_name, temperature_min,
@@ -306,9 +312,18 @@ output-bounds violation.
    intro), companion: {id, name}}`. No recommendation, no working agreement — a
    hello. `companion_not_found` (with `visible`) / `ambiguous` (retry with the
    id) on a bad name.
-- `list_companions()` → `{teams: [{id, name, visibility, members: [{id,
-   name, kind, description}]}], companions: [{id, name, kind, visibility,
-   description, teams}]}`
+- `list_companions()` → the cheap directory: `{companions: [{id, name, kind,
+   visibility, hint}]}` where `hint` is the first sentence of the description.
+   Confirm existence / spelling, resolve ambiguity, shortlist.
+- `describe_companions(companions: [ref, ...])` → full profiles for a shortlist
+   (names or `cmp_<uuid>` ids): `{companions: [{id, name, kind, visibility,
+   description, teams}], errors: [{ref, reason}, ...]}`. `description` is the
+   full untruncated text. Partial success is fine; an `ambiguous` error carries
+   `candidates` (retry with the id), a `not_found` matched nothing. Cheap read,
+   no model call.
+- `list_teams()` → `{teams: [{id, name, visibility, members: [{id, name,
+   kind}]}]}` — teams and their member rosters. Full member profiles via
+   `describe_companions`.
 - `list_models()` → `{models: [{slug, display_name, temperature_min,
    temperature_max, top_p_min, top_p_max}, ...]}` (alphabetical by slug)
 - `consult(prompt, mode, main?, participants?, tools?, timeout_seconds=600)`
