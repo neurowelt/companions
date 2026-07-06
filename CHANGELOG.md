@@ -2,6 +2,20 @@
 
 All notable changes to the Companions plugin are documented in this file.
 
+## [0.4.0] - 2026-07-06
+
+### Added
+- New `/describe-companions` command — full profiles for a shortlist of companions by name or id.
+- New `/list-teams` command — teams and their member rosters.
+
+### Changed
+- Slimmed `list_companions` to a cheap directory of names, ids, and one-line hints; full profiles now come from the new `describe_companions` tool and team rosters from `list_teams`.
+- Updated the `using-companions` skill for the shortlist → `describe_companions` flow.
+- Working agreement bumped to v3 for the new discovery surface.
+
+### Removed
+- Dropped the deprecated `discover` MCP tool alias.
+
 ## [0.3.1] - 2026-07-06
 
 ### Fixed
@@ -87,6 +101,7 @@ All notable changes to the Companions plugin are documented in this file.
 - Commands: `/companions-balance`, `/companions-consult`, `/companions-discover`, `/companions-setup`. (`b5de196`)
 - CI workflow for automatic version bumping and a `bump-version.sh` script. (`b5de196`)
 
+[0.4.0]: https://github.com/neurowelt/companions-plugin/releases/tag/v0.4.0
 [0.3.1]: https://github.com/neurowelt/companions-plugin/releases/tag/v0.3.1
 [0.3.0]: https://github.com/neurowelt/companions-plugin/releases/tag/v0.3.0
 [0.2.0]: https://github.com/neurowelt/companions-plugin/releases/tag/v0.2.0
@@ -100,6 +115,8 @@ All notable changes to the Companions plugin are documented in this file.
 [0.1.2]: https://github.com/neurowelt/companions-plugin/releases/tag/v0.1.2
 [0.1.1]: https://github.com/neurowelt/companions-plugin/releases/tag/v0.1.1
 [0.1.0]: https://github.com/neurowelt/companions-plugin/releases/tag/v0.1.0
+
+---
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
