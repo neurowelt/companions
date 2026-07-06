@@ -47,3 +47,11 @@ hermes mcp add --url https://api.humx.ai/mcp --auth oauth companions
 ## Codex CLI
 
 You can add the marketplace by using `/plugins` command within Codex CLI, choosing **Add Marketplace** and pasting the link to this repository. Codex will automatically open browser's window for authentication.
+
+If authentication expires later, reconnect the MCP without reinstalling the plugin:
+
+```bash
+codex mcp login companions --scopes openid,offline_access
+```
+
+After login, restart Codex or start a new thread so the Companions tools are loaded again.

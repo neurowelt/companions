@@ -2,7 +2,9 @@
     "mcpServers": {
         "companions": {
             "type": "http",
-            "url": "https://api.humx.ai/mcp"
+            "url": "https://api.humx.ai/mcp",
+            "oauth_resource": "https://api.humx.ai/mcp",
+            "scopes": ["openid", "offline_access"]
         }
     }
 }
