@@ -111,6 +111,7 @@ All notable changes to the Companions plugin are documented in this file.
 - Commands: `/companions-balance`, `/companions-consult`, `/companions-discover`, `/companions-setup`. (`b5de196`)
 - CI workflow for automatic version bumping and a `bump-version.sh` script. (`b5de196`)
 
+[0.5.0]: https://github.com/neurowelt/companions-plugin/releases/tag/v0.5.0
 [0.4.0]: https://github.com/neurowelt/companions-plugin/releases/tag/v0.4.0
 [0.3.1]: https://github.com/neurowelt/companions-plugin/releases/tag/v0.3.1
 [0.3.0]: https://github.com/neurowelt/companions-plugin/releases/tag/v0.3.0
