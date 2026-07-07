@@ -8,8 +8,8 @@ description: Use when the user's problem would benefit from domain-expert perspe
 You have access to a panel of generated expert personas through the
 `companions` MCP server. The tools are `handshake`, `meet`, `list_companions`,
 `describe_companions`, `list_teams`, `list_models`, `consult`, `submit_reply`,
-`submit_tool_outputs`, and `check_balance`. This skill tells you when to reach
-for them and how to interpret what comes back.
+`submit_tool_outputs`, `get_job`, and `check_balance`. This skill tells you when
+to reach for them and how to interpret what comes back.
 
 ## Starting a new project — `handshake` first
 
@@ -178,10 +178,13 @@ once you have a remembered Companions setup for this project.
    there is any local material the expert could inspect, build the
    `tools` array now. Client tools are supported for `mode="answer"`
    only in v1 — if you need tools, use `answer`.
-6. **Call `consult`.** It blocks until done — don't ask the user to wait,
-   just do it. Typical run is seconds to a minute; for longer modes
-   (`discussion`, `panel`) raise `timeout_seconds` (default 600). If it
-   returns `requires_action`, run the client-tool loop below.
+6. **Call `consult`.** It waits briefly for the answer (default 60s) — don't
+   ask the user to wait, just do it. Quick modes return the answer in one
+   round-trip; heavy modes (`discussion`, `panel`, `parallel_with_main`, deep
+   crumbs) often outlast the wait and return `{status: "pending", job_id}` —
+   NOT a failure, the run is alive server-side. Collect it with `get_job` while
+   you keep working (see **Collecting a `pending` run** below). If it returns
+   `requires_action`, run the client-tool loop below instead.
 7. **Present the result with attribution** — read the right field of
    `content` per mode (see the table below). For `panel` / `discussion` /
    `parallel`, name who said what; don't collapse multiple voices into
@@ -213,6 +216,29 @@ has called one of YOUR tools and the run is paused waiting on you:
 
 Do not fabricate tool outputs. If you genuinely cannot run a pending call,
 return an honest error string as its `output` so the expert can adapt.
+
+## Collecting a `pending` run
+
+`consult` waits only briefly (default 60s) before handing back a handle, so a
+long `panel` or `discussion` returns `{status: "pending", job_id}` rather than
+blocking your whole turn. The run keeps going server-side — the answer is not
+lost. To collect it:
+
+1. Note the `job_id`. Go do other useful work — you don't have to sit and wait.
+2. Call `get_job(job_id)`. It waits briefly and returns either the finished
+   answer (the SAME envelope `consult` would have — see below) or
+   `{status: "pending"|"running", job_id}` meaning "not ready yet."
+3. If still pending, call `get_job(job_id)` again after your next chunk of work
+   — on your own cadence, not a tight loop. Repeat until it is terminal
+   (`complete`/`failed`) or hands you a turn (`requires_action` →
+   `submit_tool_outputs`, `needs_reply` → `submit_reply`).
+
+`get_job` is read-only — it never spends credit, so pulling is always safe. Pass
+`timeout_seconds=0` for an instant snapshot ("is it done yet?") without waiting.
+It also collects a `submit_reply` / `submit_tool_outputs` that came back
+`pending`. **Never** re-issue `consult` to retrieve a pending run: the original
+`job_id` is the one live handle to your answer, and a fresh `consult` enqueues
+(and bills) a second run.
 
 ## Reading `consult` results
 
@@ -264,10 +290,11 @@ return an honest error string as its `output` so the expert can adapt.
   analogous case). Surface the message; this is a hard constraint, not a
   retry path.
 
-- **`{status: "timeout", job_id}`** — the run is still going. Surface
-  the `job_id` so the user can recover it later with
-  `uv run python client.py jobs get <job_id>`. Do not silently retry —
-  that's a double-spend.
+- **`{status: "pending", job_id, hint}`** — the run outlasted `consult`'s
+  courtesy-wait and is still going server-side. NOT a failure, NOT lost.
+  Collect it with `get_job(job_id)` — see **Collecting a `pending` run**
+  above. Never re-issue `consult` to retrieve it; that enqueues a second,
+  separately billed run.
 
 - **`{status: "error", http_status, body, ...}`** — POST or poll failed
   at the HTTP layer. Read `body` for the reason. Common causes:
@@ -326,13 +353,18 @@ output-bounds violation.
    `describe_companions`.
 - `list_models()` → `{models: [{slug, display_name, temperature_min,
    temperature_max, top_p_min, top_p_max}, ...]}` (alphabetical by slug)
-- `consult(prompt, mode, main?, participants?, tools?, timeout_seconds=600)`
-   → see "Reading `consult` results". **Pass `tools` on every consult**
-   where the expert could inspect local material (see "Always hand the
-   expert your tools").
-- `submit_reply(job_id, reply, idempotency_key?, timeout_seconds=600)`
+- `consult(prompt, mode, main?, participants?, tools?, timeout_seconds=60)`
+   → see "Reading `consult` results". Waits ~60s, then returns the answer or
+   `{status: "pending", job_id}` to collect with `get_job`. **Pass `tools` on
+   every consult** where the expert could inspect local material (see "Always
+   hand the expert your tools").
+- `submit_reply(job_id, reply, idempotency_key?, timeout_seconds=60)`
    → answer a `needs_reply` (from `handshake` or a turn-capable `consult`);
    same envelope set as `consult`.
-- `submit_tool_outputs(job_id, tool_outputs, idempotency_key?, timeout_seconds=600)`
+- `submit_tool_outputs(job_id, tool_outputs, idempotency_key?, timeout_seconds=60)`
    → resume a paused run; same envelope set as `consult`.
+- `get_job(job_id, timeout_seconds=60)` → collect a `pending` run (or a
+   paused/timed-out resume) by its handle: the same envelope set as `consult`
+   once terminal, or `{status: "pending"|"running", job_id}` to call again.
+   Read-only, never bills; `timeout_seconds=0` for an instant snapshot.
 - `check_balance()` → API balance envelope (pass-through).

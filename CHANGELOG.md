@@ -2,6 +2,16 @@
 
 All notable changes to the Companions plugin are documented in this file.
 
+## [0.5.0] - 2026-07-07
+
+### Added
+- New `get_job` MCP tool — collect a run by its `job-<uuid>` handle: the reader for a `pending` consult (or a paused/timed-out resume). Read-only, never bills.
+- `using-companions` skill: a "Collecting a `pending` run" section teaching the submit-then-collect flow.
+
+### Changed
+- `consult` now waits a bounded courtesy-window (default 60s) then returns `{status: "pending", job_id}` instead of blocking indefinitely; the former `{status: "timeout"}` envelope is renamed `pending`. Resume verbs (`submit_reply`, `submit_tool_outputs`) default `timeout_seconds` to 60 as well.
+- Working agreement bumped to v4 for the wait-policy rule (collect a `pending` run with `get_job`, never re-`consult`).
+
 ## [0.4.0] - 2026-07-06
 
 ### Added
