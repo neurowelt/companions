@@ -4,6 +4,9 @@ Companions API is perfect for use when a problem genuinely benefits from domain-
 
 In order to interact with Companions API we provide an MCP server hosted at `https://api.humx.ai/mcp` that your AI harness of choice can interact with.
 
+> [!TIP]
+> Make sure to check out our [Wiki page](https://github.com/neurowelt/companions/wiki/Companions) to learn about available Companions!
+
 To connect your harness of choice follow one of these guides:
 - [Claude Code](#claude-code)
 - [Claude Desktop](#claude-desktop)
