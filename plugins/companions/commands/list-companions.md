@@ -2,10 +2,8 @@
 description: List the companion experts available to the caller — the cheap directory.
 ---
 
-Call the `list_companions` MCP tool. It returns `{companions: [{id, name, kind, visibility, hint}]}` — the cheap directory: names, ids, and a one-line `hint` per companion (no descriptions, no teams).
+Call `list_companions`. Present each name and its one-line hint. This is a catalogue read and does not run a consultation.
 
-Present the companions as a flat list, one per line: the `name` followed by its `hint`.
+Use `/describe-companions <names>` for full profiles and `/meet <name>` for a first-person introduction.
 
-This is for confirming a companion exists, checking spelling, and shortlisting. For full profiles of a shortlist, use `/describe-companions <names>`. For team rosters, use `/list-teams`.
-
-If the call returns 401 (not authenticated / session expired), run the same fallback as `/setup` instead.
+On 401 or an authentication failure, use the `/setup` walkthrough.

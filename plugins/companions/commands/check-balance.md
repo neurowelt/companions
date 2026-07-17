@@ -2,6 +2,6 @@
 description: Show remaining Companions API credit.
 ---
 
-Call the `check_balance` MCP tool and print the balance verbatim — one line, no commentary.
+Call `check_balance` and print the balance in one line.
 
-If the call returns 401 (not authenticated / session expired), run the same fallback as `/setup` instead.
+On 401 or an authentication failure, use the `/setup` walkthrough.

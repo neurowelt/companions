@@ -1,6 +1,6 @@
 # Companions
 
-Companions API is perfect for use when a problem genuinely benefits from domain-expert perspectives — explicit asks, contested questions, or moments when you've hit a wall.
+Companions brings additional expert perspectives into everyday work: a second opinion on a decision, critique of a draft, a different framing for a problem, or a human-steered brainstorm.
 
 In order to interact with Companions API we provide an MCP server hosted at `https://api.humx.ai/mcp` that your AI harness of choice can interact with.
 
@@ -27,6 +27,8 @@ Then install the plugin:
 
 After installation use `/mcp` command and navigate to `companions` MCP, where authentication process can be triggered via **Authenticate** flow.
 
+Then run `/setup`. The agent checks the connection, offers a short handshake, recommends one everyday Companion, and gives you two tailored questions to try. Nothing is consulted until you choose a prompt. You can change or clear the everyday default later.
+
 ## Claude Desktop
 
 In your **Claude Desktop** application go to **Customize** > **Connectors**. Click the "**+**" icon and choose **Add custom connector**. Fill out the fields:
@@ -35,9 +37,9 @@ In your **Claude Desktop** application go to **Customize** > **Connectors**. Cli
 
 Confirm by clicking **Add**. Remember to enable each tool for that MCP by clicking the slider next to tool names.
 
-Check the connection simply by asking the chat:
+After connecting, ask the chat:
 ```
-Please check my Companions balance
+Please set up Companions for me. Check the connection, then offer the short handshake if I do not have an everyday default.
 ```
 
 ## Hermes Agent
@@ -58,3 +60,15 @@ codex mcp login companions --scopes openid,offline_access
 ```
 
 After login, restart Codex or start a new thread so the Companions tools are loaded again.
+
+Run `/setup` to complete the introduction and choose an everyday Companion. The default is used for simple one-person questions; the agent still chooses multiple Companions problem by problem.
+
+## Everyday use
+
+Companions are intentional second opinions, not only formal experts. Try prompts such as:
+
+- “Ask my everyday Companion what I may be overlooking in this decision.”
+- “Get two relevant Companion perspectives on this draft, then show me their distinct views and your synthesis.”
+- “Would a Companion brainstorm help before we design this feature?”
+
+The agent should explain why it wants to consult a particular Companion. It translates responses into your preferred language and structure while preserving each Companion's distinct point of view. Ask for the raw response whenever you want it.

@@ -1,7 +1,7 @@
 {
   "name": "companions",
-  "version": "0.5.0",
-  "description": "Consult a panel of generated expert personas. Bundles the companions MCP server (handshake, meet, consult, list_companions, check_balance) and a skill that nudges your agent to reach for it when a problem benefits from domain-expert perspectives — explicit asks, contested questions, or moments when you've hit a wall.",
+  "version": "0.5.0+codex.20260717150742",
+  "description": "Bring additional expert perspectives into everyday questions, decisions, critiques, and brainstorms. Includes guided setup, a remembered everyday Companion, and workflows that preserve distinct voices while translating them into the user's language.",
   "author": {
     "name": "humx.ai"
   },
@@ -19,8 +19,8 @@
   "mcpServers": "./.mcp.json",
   "interface": {
     "displayName": "Companions",
-    "shortDescription": "Multi-persona analysis via the Companion Panel API",
-    "longDescription": "Consult a panel of generated expert personas. Bundles the companions MCP server (handshake, meet, consult, list_companions, check_balance) and a skill that nudges your agent to reach for it when a problem benefits from domain-expert perspectives — explicit asks, contested questions, or moments when you've hit a wall.",
+    "shortDescription": "Expert perspectives for everyday work",
+    "longDescription": "Bring additional expert perspectives into everyday questions, decisions, critiques, and brainstorms. Includes guided setup, a remembered everyday Companion, and workflows that preserve distinct voices while translating them into the user's language.",
     "developerName": "humx.ai",
     "category": "Productivity",
     "capabilities": [
@@ -28,7 +28,7 @@
       "Write"
     ],
     "defaultPrompt": [
-      "Ask an expert panel to pressure-test this idea.",
+      "Ask Companions to pressure-test this idea.",
       "Consult domain experts on this tradeoff.",
       "Get a second opinion from Companions."
     ]

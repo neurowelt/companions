@@ -2,10 +2,8 @@
 description: List the teams and their member rosters available to the caller.
 ---
 
-Call the `list_teams` MCP tool. It returns `{teams: [{id, name, visibility, members: [{id, name, kind}]}]}`.
+Call `list_teams`. Present each team followed by its members.
 
-Present each team on its own line: the team `name` followed by its member names.
+Teams are catalogue information, not an automatic default. Choose and pass multiple participants explicitly for each problem. Use `/describe-companions <names>` for full member profiles.
 
-For full profiles of any member, use `/describe-companions <names>`.
-
-If the call returns 401 (not authenticated / session expired), run the same fallback as `/setup` instead.
+On 401 or an authentication failure, use the `/setup` walkthrough.

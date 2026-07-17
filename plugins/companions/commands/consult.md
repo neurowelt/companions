@@ -1,15 +1,15 @@
 ---
-description: Consult one or more expert personas via the Companions MCP.
-argument-hint: "<prompt> [mode=<answer, parallel, ...>] [main=<name>] [participants=<name1>,<nam2>...]"
+description: Ask one or more Companions for a perspective, critique, or answer.
+argument-hint: "<prompt> [main=<name>] [mode=<mode>] [participants=<name1>,<name2>...]"
 ---
 
-The user has invoked `/consult $ARGUMENTS`.
+The user invoked `/consult $ARGUMENTS`.
 
-1. Parse `$ARGUMENTS`. The first segment is the **prompt**. Optional trailing tokens may specify `mode=...`, `main=...`, `participants=name1,name2`. If the prompt is missing, ask the user what they want to consult about.
-2. If `mode` is not specified, pick one using the table in the `using-companions` skill (question shape → mode).
-3. If `main` or `participants` are needed by the chosen mode and not specified, call `list_companions` first (or `list_teams` when the user named a team) and ask the user to pick — or, when the choice is obvious from the prompt, default and tell the user what you chose.
-4. **Declare your tools.** If the prompt touches any local material the expert could inspect (a repo, files, a URL), pass a `tools` array describing what you can run locally instead of pre-digesting it yourself. See the `using-companions` skill ("Always hand the expert your tools"). Tools need `mode=answer` in v1.
-5. Call `consult` with the resolved arguments. If it returns `{status: "pending", job_id}` (heavy modes often outlast the ~60s wait), the run is alive server-side — collect it with `get_job(job_id)`, pulling on your own cadence until it is terminal, and never re-issue `consult` (see the skill's "Collecting a `pending` run"). If it returns `requires_action`, run each pending tool call yourself and resume with `submit_tool_outputs`, repeating until it resolves (see the skill's "client-tool loop"). Present the result with per-speaker attribution (see the skill for which `content` field to read per mode).
-6. Trailing one-liner: "(consulted N experts)" if multi-expert.
+1. Extract the prompt and any explicit `main`, `mode`, or `participants`. Ask for a prompt if missing.
+2. Default to `mode="answer"`. When `main` is omitted, use the user's saved everyday default. If none exists, agree on a Companion or offer `/handshake`; do not silently choose.
+3. For a multi-Companion consultation, state why multiple views help, agree on the group, and pass every participant explicitly. Select the group for this problem rather than reusing a saved group. If routing is materially unclear, ask the ferryman.
+4. Include the outcome, relevant context, constraints, and expanded shorthand. Attach reusable client-tool declarations for any local resources the host can actually inspect.
+5. Call `consult`. Continue `pending` work with `get_job`, `requires_action` with `submit_tool_outputs`, and `needs_reply` with `submit_reply`. Never repeat `consult` to collect an existing job.
+6. Translate and conceptually compress the result for the user. Preserve attribution and distinct voices. For several Companions, show each translated view and then add agreements, tensions, and your synthesis. Offer raw responses on request.
 
-If the call returns 401 (not authenticated / session expired), run the same fallback as `/setup` instead.
+On 401 or an authentication failure, use the `/setup` walkthrough.

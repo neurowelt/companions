@@ -1,17 +1,15 @@
 ---
-description: Run the Companions first-project handshake — introduce the system and establish your working set.
+description: Introduce the Companion system, receive its working agreement, and recommend a first everyday Companion.
 ---
 
-Call the `handshake` MCP tool to run the first-project handshake. Use it **once per project**, when you have not yet remembered a Companions setup for this project (for per-problem advice later, use `consult(main="ferryman", ...)` instead — do not re-run it).
+Call `handshake` when the user is new to Companions or explicitly wants a fresh introduction.
 
-1. Compose the two portraits:
-   - `user`: a one-line portrait of the user and the work. Infer it from the project and conversation; if the user or project is genuinely unclear, ask before calling.
-   - `self`: your own `{model, harness, capabilities}` — include whether you keep memory across sessions.
-   - Optionally pass `project` and `surface`.
-2. Call `handshake`. If it returns `needs_reply`, author the missing detail and resume with `submit_reply(job_id, reply)`.
-3. On completion you get prose (Experts for you / How to work with us), a `recommendation` block (your default companion set + `default_mode`), and a verbatim `working_agreement` — the durable rules for using this MCP. Follow the working agreement for everything after.
-4. **Before persisting, confirm with the user** that they want you to remember this setup. If they agree, store the recommendation + working agreement as your working set and confirm what you stored — then suggest starting a fresh session now that the handshake is done.
+1. Pass a short, honest `user` portrait; your `self` portrait (`model`, `harness`, capabilities, and memory behavior); and `project` or `surface` when useful. Ask only if important context is genuinely unclear.
+2. If the response is `needs_reply`, provide the missing detail through `submit_reply`.
+3. Explain the system and working agreement in plain language. Follow the agreement for later Companion work and retain it in the host application's normal persistent memory or configuration when supported; do not invent a universal path. Present the recommended everyday Companion, the reason it fits, and the proposed warm-up questions.
+4. Check if user has a default Companion in preferences already using `list_preferences`. Ask whether the user wants to replace with or save the proposed Companion as their global `answer` default. Only after confirmation call `set_preference(mode="answer", main=<recommended id or name>)`.
+5. Offer a few warm-up prompts based on handshake response and your knowledge of what user is working on and explain why it is a useful first consultation. Do not run it without the user's choice.
 
-To then introduce your user to one of the recommended companions, use `/meet <companion>`.
+Do not require the user to clear or restart the session. The default can be updated with `set_preference` or removed with `clear_preference` at any time. For later problem-specific routing uncertainty, ask the ferryman instead of repeating onboarding.
 
-If the call returns 401 (not authenticated / session expired), run the same fallback as `/setup` instead.
+On 401 or an authentication failure, use the `/setup` authentication walkthrough.

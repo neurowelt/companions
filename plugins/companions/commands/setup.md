@@ -1,23 +1,18 @@
 ---
-description: Verify the Companions MCP is authenticated and reachable; otherwise walk the user through the OAuth sign-in.
+description: Check Companions authentication, introduce first-time users, and manage their everyday default Companion.
 ---
 
-# Companions — setup check
+# Companions setup
 
-Call the `check_balance` MCP tool and report the first matching outcome:
+1. Call `check_balance`.
+   - On success, report the balance briefly and continue.
+   - On 401 or an authentication-required MCP state, tell the user to run `/mcp`, select `companions`, and choose **Authenticate**. There is no API key or environment variable to paste.
+   - On a network or 5xx error, report `https://api.humx.ai/mcp` and ask the user to confirm connectivity.
+2. Call `list_preferences` and inspect the global `mode="answer"` preference.
+   - If one exists, name the everyday default and explain that the user can update or clear it at any time. Setup is complete; do not make them reconfirm an existing choice unless they asked to change it.
+   - If none exists, say: “Companions is connected. If this is your first time, I can run a short handshake to introduce the system, recommend an everyday Companion, and give you two questions to try.”
+3. If the user accepts, run `handshake` with a short portrait of the user, project, and host agent. Follow the returned working agreement. Present the recommended default, why it fits, and the tailored warm-up questions.
+4. Ask whether to save the recommendation as their everyday default. Only after confirmation call `set_preference(mode="answer", main=<recommended id or name>)`. A team is not needed for this preference.
+5. Offer a few warm-up prompts based on handshake response and your knowledge of what user is working on. Call `consult` only if the user chooses it; setup itself must never spend consultation credit automatically.
 
-- Returns a balance envelope → say "Companions is set up. Balance: $X." Done.
-- Returns 401 / authentication error, **or** the MCP server shows as needing
-  authentication / not connected → the user has not signed in yet (or their
-  session expired). Print the "Setup walkthrough" below.
-- Network / 5xx error → authentication is fine but the service is unreachable.
-  Print the service URL (`https://api.humx.ai/mcp`) and ask the user to confirm
-  they're online.
-
-This MCP authenticates with OAuth — there is no API key and no environment
-variable to set. The MCP call itself is the auth check; never ask the user to
-paste a token or key.
-
-## Setup walkthrough
-
-If the user is not authenticated, refer user to use `/mcp` command, select `companions` MCP and authenticate via **Authenticate** option.
+To change an existing default, agree on the new Companion and call `set_preference(mode="answer", main=...)` after confirmation. To remove it, call `clear_preference(mode="answer")` after confirmation. Both choices can be changed later.
