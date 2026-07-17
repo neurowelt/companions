@@ -2,6 +2,21 @@
 
 All notable changes to the Companions plugin are documented in this file.
 
+## [0.6.0] - 2026-07-17
+
+### Added
+- New `perspective` skill for structured second opinions, critiques, independent Companion views, and host synthesis.
+- New `brainstorm` skill for human-steered creative exploration with independent ideas, conceptual compression, and review checkpoints.
+- New `/preferences`, `/set-preference`, and `/clear-preference` commands for managing the user's everyday Companion.
+- Reusable client-tool declarations and consultation continuation guidance for `pending`, `requires_action`, and `needs_reply` states.
+
+### Changed
+- Reworked the `using-companions` skill into a compact activation and routing guide for everyday questions, challenges, decisions, drafts, and ideas—not only formal expert consultations.
+- Redesigned `/setup` and `/handshake` around a guided first success: introduce the system, recommend one editable everyday Companion, and offer tailored warm-up questions without automatically spending consultation credit.
+- Defaulted ordinary consultations to `answer`, while choosing multiple Companions explicitly for each problem.
+- Companion responses are now translated and conceptually compressed for the user while preserving distinct voices; multi-Companion results add a separate host synthesis.
+- Simplified command guidance, plugin descriptions, and README onboarding around plain language and intentional second opinions.
+
 ## [0.5.0] - 2026-07-07
 
 ### Added
@@ -111,6 +126,7 @@ All notable changes to the Companions plugin are documented in this file.
 - Commands: `/companions-balance`, `/companions-consult`, `/companions-discover`, `/companions-setup`. (`b5de196`)
 - CI workflow for automatic version bumping and a `bump-version.sh` script. (`b5de196`)
 
+[0.6.0]: https://github.com/neurowelt/companions/releases/tag/v0.6.0
 [0.5.0]: https://github.com/neurowelt/companions-plugin/releases/tag/v0.5.0
 [0.4.0]: https://github.com/neurowelt/companions-plugin/releases/tag/v0.4.0
 [0.3.1]: https://github.com/neurowelt/companions-plugin/releases/tag/v0.3.1
