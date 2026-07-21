@@ -44,7 +44,7 @@ Conceptually compress each response into the user's vocabulary and preferred lev
 - preserve real disagreement;
 - attribute the view to its Companion.
 
-Do not merely paste raw output. Offer raw responses if the user wants the original nuance.
+Do not merely paste raw output. Offer raw responses if the user wants the original nuance. Calibrate responses to the user's preferred tone of voice
 
 For several Companions, present:
 

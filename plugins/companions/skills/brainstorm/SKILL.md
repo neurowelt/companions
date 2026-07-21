@@ -16,6 +16,7 @@ Run a human-steered brainstorm with Companions. Produce a few understandable dir
 - Prefer a few different mechanisms over many cosmetic variants.
 - Preserve meaningful disagreement and uncertainty.
 - The host agent is always the orchestrator. Companions are thinkers; they do not own the workflow or impersonate the user.
+- Calibrate responses to the user's preferred tone of voice
 
 Conceptual compression rewrites an idea so it is understandable in one reading: ordinary words, concrete behavior, explicit connection to the problem, and the most important tradeoff. It may remove repetition, but must not change the mechanism, erase a constraint, or turn uncertainty into fact.
 

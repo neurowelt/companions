@@ -50,7 +50,8 @@ When the Companion could inspect local files, search, a URL, or another resource
 Companion responses are source material, not mandatory final wording.
 
 - Translate and conceptually compress each response into the user's language, level of detail, and preferred structure.
-- Use plain sentences and meaningful headings by default.
+- Calibrate to the user's preferred tone of voice. Pitch the summary at that level instead of mirroring the Companion's sophistication.
+- Use plain langauge, sentences and meaningful headings by default.
 - Preserve the Companion's distinct claim, reasoning, uncertainty, and disagreement. Translation must not flatten voices into consensus.
 - Attribute every view. If several Companions answered, show their translated views separately, then add your own synthesis of agreements, tensions, and implications.
 - Offer the raw responses when the user wants nuance or detail.
