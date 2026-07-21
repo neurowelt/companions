@@ -10,6 +10,6 @@ Treat the response status as the next action:
 - `decision`: fix the reported input problem before making a new call; there may be no job to poll.
 - `failed` or `error`: explain the useful error message. Do not pretend a Companion answered.
 
-Use an idempotency key when retrying a continuation after a dropped connection. `get_job` is read-only. A new `consult` is new, billable work.
+Use `consult` with short timeout (45s default is good) and rely on `get_job` for responses that take more time.
 
-Authentication failures return to the setup flow. If credit is insufficient, tell the user before attempting another consultation.
+If credit is insufficient, tell the user before attempting another consultation.

@@ -7,7 +7,9 @@ description: Use for a structured second opinion, critique, alternative framing,
 
 Use Companions as additional thinkers, then turn their responses into an answer the user can act on.
 
-## 1. Frame the question
+## Stage 0: Frame the question
+
+If user provides little or superficial information about their problem or task, ask them clarifying questions until you can understand the input. This is a critical phase on which gaining a new perspective relies on.
 
 Clarify only what materially affects the consultation:
 
@@ -19,7 +21,7 @@ Clarify only what materially affects the consultation:
 
 For critique, include the draft or artifact and ask what works, what is weak or missing, and how to improve it without losing its purpose.
 
-## 2. Agree who to ask
+## Stage 1: Agree who to ask
 
 Recommend one to three Companions whose perspectives differ in a useful way. State why each one fits. Use one for a quick second opinion; use several when disagreement or coverage is valuable.
 
@@ -27,13 +29,13 @@ Get the user's agreement before spending credit unless they already named the Co
 
 If the roster is unfamiliar, inspect it. Ask the ferryman only when routing remains materially unclear.
 
-## 3. Consult independently
+## Stage 2: Consult independently
 
 Give every Companion the same complete frame. For independent perspectives, do not reveal another Companion's answer before the first response. Attach reusable client tools when relevant and available.
 
 Use ordinary `answer` consultations for separate one-person views. Follow the continuation protocol for pending work or tool calls. Never simulate a Companion when the service is unavailable.
 
-## 4. Translate without flattening
+## Stage 4: Translate without flattening
 
 Conceptually compress each response into the user's vocabulary and preferred level of detail:
 

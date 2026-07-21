@@ -21,6 +21,8 @@ Conceptual compression rewrites an idea so it is understandable in one reading: 
 
 ## Set up the brainstorm
 
+If user provides little or superficial information about their problem or task, ask them clarifying questions until you can understand the input. This is a critical phase on which the whole brainstorm relies on.
+
 Choose meaningfully different Companions with the user and reuse them throughout:
 
 - **Minimal:** 2 thinkers, 1 idea each. Recommend this first.

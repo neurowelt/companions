@@ -7,6 +7,10 @@ description: Use when an idea, challenge, problem, decision, draft, strategy, or
 
 Companions are additional thinkers for everyday work. Use them for questions and challenges where another point of view could change the result—not only for formal expert consultations.
 
+## Understanding user's input
+
+If user provides little or superficial information about their problem or task, ask them clarifying questions until you can understand the input. This is a critical phase on which using Companions greatly relies on.
+
 ## Suggest them naturally
 
 Suggest Companions when they can provide a concrete benefit, such as:
