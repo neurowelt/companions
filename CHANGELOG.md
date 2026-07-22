@@ -145,24 +145,25 @@ All notable changes to the Companions plugin are documented in this file.
 - Commands: `/companions-balance`, `/companions-consult`, `/companions-discover`, `/companions-setup`. (`b5de196`)
 - CI workflow for automatic version bumping and a `bump-version.sh` script. (`b5de196`)
 
+[0.6.3]: https://github.com/neurowelt/companions/releases/tag/v0.6.3
 [0.6.2]: https://github.com/neurowelt/companions/releases/tag/v0.6.2
 [0.6.1]: https://github.com/neurowelt/companions/releases/tag/v0.6.1
 [0.6.0]: https://github.com/neurowelt/companions/releases/tag/v0.6.0
-[0.5.0]: https://github.com/neurowelt/companions-plugin/releases/tag/v0.5.0
-[0.4.0]: https://github.com/neurowelt/companions-plugin/releases/tag/v0.4.0
-[0.3.1]: https://github.com/neurowelt/companions-plugin/releases/tag/v0.3.1
-[0.3.0]: https://github.com/neurowelt/companions-plugin/releases/tag/v0.3.0
-[0.2.0]: https://github.com/neurowelt/companions-plugin/releases/tag/v0.2.0
-[0.1.9]: https://github.com/neurowelt/companions-plugin/releases/tag/v0.1.9
-[0.1.8]: https://github.com/neurowelt/companions-plugin/releases/tag/v0.1.8
-[0.1.7]: https://github.com/neurowelt/companions-plugin/releases/tag/v0.1.7
-[0.1.6]: https://github.com/neurowelt/companions-plugin/releases/tag/v0.1.6
-[0.1.5]: https://github.com/neurowelt/companions-plugin/releases/tag/v0.1.5
-[0.1.4]: https://github.com/neurowelt/companions-plugin/releases/tag/v0.1.4
-[0.1.3]: https://github.com/neurowelt/companions-plugin/releases/tag/v0.1.3
-[0.1.2]: https://github.com/neurowelt/companions-plugin/releases/tag/v0.1.2
-[0.1.1]: https://github.com/neurowelt/companions-plugin/releases/tag/v0.1.1
-[0.1.0]: https://github.com/neurowelt/companions-plugin/releases/tag/v0.1.0
+[0.5.0]: https://github.com/neurowelt/companions/releases/tag/v0.5.0
+[0.4.0]: https://github.com/neurowelt/companions/releases/tag/v0.4.0
+[0.3.1]: https://github.com/neurowelt/companions/releases/tag/v0.3.1
+[0.3.0]: https://github.com/neurowelt/companions/releases/tag/v0.3.0
+[0.2.0]: https://github.com/neurowelt/companions/releases/tag/v0.2.0
+[0.1.9]: https://github.com/neurowelt/companions/releases/tag/v0.1.9
+[0.1.8]: https://github.com/neurowelt/companions/releases/tag/v0.1.8
+[0.1.7]: https://github.com/neurowelt/companions/releases/tag/v0.1.7
+[0.1.6]: https://github.com/neurowelt/companions/releases/tag/v0.1.6
+[0.1.5]: https://github.com/neurowelt/companions/releases/tag/v0.1.5
+[0.1.4]: https://github.com/neurowelt/companions/releases/tag/v0.1.4
+[0.1.3]: https://github.com/neurowelt/companions/releases/tag/v0.1.3
+[0.1.2]: https://github.com/neurowelt/companions/releases/tag/v0.1.2
+[0.1.1]: https://github.com/neurowelt/companions/releases/tag/v0.1.1
+[0.1.0]: https://github.com/neurowelt/companions/releases/tag/v0.1.0
 
 ---
 
