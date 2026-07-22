@@ -21,7 +21,7 @@
 #   plugins/companions/.codex-plugin/plugin.json  .version
 #   .claude-plugin/marketplace.json              .plugins[0].version
 #
-# Then creates commit "bump: vX.Y.Z". CI tags vX.Y.Z when the commit is pushed.
+# Then creates commit "chore(release): vX.Y.Z". CI tags vX.Y.Z when it is pushed.
 # Does not push or tag — prints the push command for you to run.
 set -euo pipefail
 
@@ -162,9 +162,9 @@ fi
 for entry in "${MANIFESTS[@]}"; do
   git -C "$ROOT" add "${entry%%::*}"
 done
-git -C "$ROOT" commit -m "bump: v${new_version}${message_suffix}"
+git -C "$ROOT" commit -m "chore(release): v${new_version}${message_suffix}"
 
 echo
-echo "committed bump to v${new_version}"
+echo "committed release v${new_version}"
 echo "push it and CI will tag v${new_version}:"
 echo "  git push origin HEAD"

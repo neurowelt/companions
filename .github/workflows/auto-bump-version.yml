@@ -30,15 +30,15 @@ jobs:
       - name: Install jq
         run: sudo apt-get update && sudo apt-get install -y jq
 
-      - name: Tag when a bump commit was pushed
+      - name: Tag when a release commit was pushed
         run: |
           set -euo pipefail
 
           # A manual bump (scripts/bump-version.sh) leaves a commit whose subject
-          # starts with "bump". Anything else is a normal push we must not tag.
+          # is "chore(release): vX.Y.Z". Anything else is a normal push, not tagged.
           HEAD_MSG="$(git log -1 --format=%s HEAD)"
-          if ! printf '%s' "$HEAD_MSG" | grep -qE '^bump'; then
-            echo "HEAD is not a bump commit; nothing to tag: $HEAD_MSG"
+          if ! printf '%s' "$HEAD_MSG" | grep -qE '^chore\(release\)'; then
+            echo "HEAD is not a release commit; nothing to tag: $HEAD_MSG"
             exit 0
           fi
 
