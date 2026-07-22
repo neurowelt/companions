@@ -1,7 +1,7 @@
 {
   "name": "companions",
   "description": "Bring additional expert perspectives into everyday questions, decisions, critiques, and brainstorms. Includes guided setup, a remembered everyday Companion, and workflows that preserve distinct voices while translating them into the user's language.",
-  "version": "0.6.2",
+  "version": "0.6.3",
   "author": {
     "name": "humx.ai"
   },
