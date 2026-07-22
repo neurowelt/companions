@@ -1,6 +1,8 @@
 # Reusable client-tool declarations
 
-Attach only tools the current host can execute. Reuse stable declarations instead of rebuilding them for every consultation, but keep descriptions honest when capabilities change. If the host supports persistent agent memory or configuration, store the chosen declarations in its normal application-specific space; do not invent a universal filesystem path.
+Attach the available declarations on every consultation—Companions use them to inspect files, search, and fetch resources on their own, which produces materially better-grounded answers, so it is worth the extra tokens. Attach only tools the current host can actually execute. Reuse stable declarations instead of rebuilding them for every consultation, but keep descriptions honest when capabilities change. If the host supports persistent agent memory or configuration, store the chosen declarations in its normal application-specific space; do not invent a universal filesystem path.
+
+When you attach client tools, use `mode="answer"` only. Complex modes such as parallel are currently rejected together with tools. This does not stop you from consulting several Companions at once: run multiple `answer` consultations concurrently instead of switching to parallel mode, which keeps the tools attached to every call.
 
 Typical declarations:
 

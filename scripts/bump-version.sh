@@ -21,8 +21,8 @@
 #   plugins/companions/.codex-plugin/plugin.json  .version
 #   .claude-plugin/marketplace.json              .plugins[0].version
 #
-# Then creates commit "chore: bump version to vX.Y.Z" and annotated tag vX.Y.Z.
-# Does not push — prints the push command for you to run.
+# Then creates commit "bump: vX.Y.Z". CI tags vX.Y.Z when the commit is pushed.
+# Does not push or tag — prints the push command for you to run.
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
@@ -155,18 +155,16 @@ for entry in "${MANIFESTS[@]}"; do
 done
 
 if [[ "$no_commit" -eq 1 ]]; then
-  echo "done (files updated; commit/tag skipped per --no-commit)"
+  echo "done (files updated; commit skipped per --no-commit)"
   exit 0
 fi
 
 for entry in "${MANIFESTS[@]}"; do
   git -C "$ROOT" add "${entry%%::*}"
 done
-git -C "$ROOT" commit -m "chore: bump version to v${new_version}${message_suffix}"
-git -C "$ROOT" tag -a "v${new_version}" -m "v${new_version}"
+git -C "$ROOT" commit -m "bump: v${new_version}${message_suffix}"
 
 echo
-echo "committed and tagged v${new_version}"
-echo "to publish:"
+echo "committed bump to v${new_version}"
+echo "push it and CI will tag v${new_version}:"
 echo "  git push origin HEAD"
-echo "  git push origin v${new_version}"

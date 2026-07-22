@@ -1,4 +1,4 @@
-name: Auto-bump version
+name: Tag on version bump
 
 on:
   push:
@@ -14,7 +14,7 @@ permissions:
   contents: write
 
 jobs:
-  bump:
+  tag:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -30,33 +30,27 @@ jobs:
       - name: Install jq
         run: sudo apt-get update && sudo apt-get install -y jq
 
-      - name: Bump if shipping paths changed
+      - name: Tag when a bump commit was pushed
         run: |
           set -euo pipefail
-          BASE="${{ github.event.before }}"
-          HEAD="${{ github.sha }}"
-          ZERO="0000000000000000000000000000000000000000"
 
-          if [ "$BASE" = "$ZERO" ] || ! git rev-parse -q --verify "$BASE^{commit}" >/dev/null; then
-            echo "no resolvable before-SHA; comparing HEAD~1..HEAD instead"
-            BASE="HEAD~1"
+          # A manual bump (scripts/bump-version.sh) leaves a commit whose subject
+          # starts with "bump". Anything else is a normal push we must not tag.
+          HEAD_MSG="$(git log -1 --format=%s HEAD)"
+          if ! printf '%s' "$HEAD_MSG" | grep -qE '^bump'; then
+            echo "HEAD is not a bump commit; nothing to tag: $HEAD_MSG"
+            exit 0
           fi
 
-          if ./scripts/bump-version.sh changed "$BASE" "$HEAD"; then
-            # Pick the bump level from Conventional Commit subjects in the range:
-            #   type!:/type(scope)!: or a BREAKING CHANGE: footer -> major
-            #   feat:/feat(scope):                                -> minor
-            #   anything else (fix, chore, docs, refactor, ...)   -> patch
-            LEVEL=patch
-            if git log --format=%s "$BASE..$HEAD" | grep -qE '^[a-zA-Z]+(\([^)]+\))?!:' \
-               || git log --format=%B "$BASE..$HEAD" | grep -qE '^BREAKING CHANGE:'; then
-              LEVEL=major
-            elif git log --format=%s "$BASE..$HEAD" | grep -qE '^feat(\([^)]+\))?:'; then
-              LEVEL=minor
-            fi
-            echo "bump level from commit range: $LEVEL"
-            ./scripts/bump-version.sh --message-suffix " [skip ci]" "$LEVEL"
-            git push origin HEAD --follow-tags
-          else
-            echo "no shipping-path changes; skipping bump"
+          VERSION="$(jq -r '.version // empty' plugins/companions/.claude-plugin/plugin.json)"
+          [ -n "$VERSION" ] || { echo "error: could not read version" >&2; exit 1; }
+          TAG="v${VERSION}"
+
+          if git rev-parse -q --verify "refs/tags/${TAG}" >/dev/null; then
+            echo "tag ${TAG} already exists; nothing to do"
+            exit 0
           fi
+
+          git tag -a "${TAG}" -m "${TAG}"
+          git push origin "${TAG}"
+          echo "tagged ${TAG}"

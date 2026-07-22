@@ -31,7 +31,7 @@ If the roster is unfamiliar, inspect it. Ask the ferryman only when routing rema
 
 ## Stage 2: Consult independently
 
-Give every Companion the same complete frame. For independent perspectives, do not reveal another Companion's answer before the first response. Attach reusable client tools when relevant and available.
+Give every Companion the same complete frame. For independent perspectives, do not reveal another Companion's answer before the first response. Always attach the available reusable client-tool declarations to every consultation so each Companion can inspect files, search, or fetch resources itself. When you attach client tools, use `mode="answer"` only; complex modes such as parallel are currently rejected together with tools. This does not stop you from consulting several Companions at once: run multiple `answer` consultations concurrently instead of switching to parallel mode, which keeps the tools attached to every call. See the [client tool declarations](../using-companions/references/client-tools.md).
 
 Use ordinary `answer` consultations for separate one-person views. Follow the continuation protocol for pending work or tool calls. Never simulate a Companion when the service is unavailable.
 

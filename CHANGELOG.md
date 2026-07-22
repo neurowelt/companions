@@ -2,6 +2,12 @@
 
 All notable changes to the Companions plugin are documented in this file.
 
+## [0.6.3] - 2026-07-22
+
+### Changed
+- Strengthened client-tool guidance in `using-companions`, `brainstorm` and `perspective` so hosts attach the available tool declarations on every Companion consultation by default.
+- Added an instruction to use `answer` mode when attaching client tools, and to consult several Companions in parallel by running concurrent `answer` consultations.
+
 ## [0.6.2] - 2026-07-21
 
 ### Changed

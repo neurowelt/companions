@@ -43,7 +43,7 @@ For more than one Companion, select the group for the specific problem. A saved 
 
 State the outcome, relevant context, constraints, and the exact point that needs another perspective. Expand acronyms and hidden assumptions. Poorly framed input creates drift, so clarify consequential ambiguity before consulting.
 
-When the Companion could inspect local files, search, a URL, or another resource, attach the subset of reusable client-tool declarations that the host can actually execute. Keep those declarations available in the host application's normal persistent memory or configuration when supported, and reuse them on later calls. See [client tool declarations](references/client-tools.md).
+Always attach the available reusable client-tool declarations when consulting a Companion, unless the host genuinely cannot execute any of them. Companions use these to inspect files, search, and fetch resources on their own, which produces materially better-grounded answers. Keep those declarations available in the host application's normal persistent memory or configuration when supported, and reuse them on later calls. When you attach client tools, use `mode="answer"` only; complex modes such as parallel are currently rejected together with tools. This does not stop you from consulting several Companions at once: run multiple `answer` consultations concurrently instead of switching to parallel mode, which keeps the tools attached to every call. See [client tool declarations](references/client-tools.md).
 
 ## Present the result for this user
 
