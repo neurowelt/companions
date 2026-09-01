@@ -1,18 +1,20 @@
 ---
-description: Check Companions authentication, introduce first-time users, and manage their everyday default Companion.
+description: Check Companions connectivity, show the roster, and suggest grounded starting points — free, spends no credit.
 ---
 
 # Companions setup
 
-1. Call `check_balance`.
+Setup is a free orientation: it reads the balance and the catalogue and never spends consultation credit.
+
+1. **Check the connection.** Call `check_balance`.
    - On success, report the balance briefly and continue.
    - On 401 or an authentication-required MCP state, tell the user to run `/mcp`, select `companions`, and choose **Authenticate**. There is no API key or environment variable to paste.
    - On a network or 5xx error, report `https://api.humx.ai/mcp` and ask the user to confirm connectivity.
-2. Call `list_preferences` and inspect the global `mode="answer"` preference.
-   - If one exists, name the everyday default and explain that the user can update or clear it at any time. Setup is complete; do not make them reconfirm an existing choice unless they asked to change it.
-   - If none exists, say: “Companions is connected. If this is your first time, I can run a short handshake to introduce the system, recommend an everyday Companion, and give you two questions to try.”
-3. If the user accepts, run `handshake` with a short portrait of the user, project, and host agent. Follow the returned working agreement. Present the recommended default, why it fits, and the tailored warm-up questions.
-4. Ask whether to save the recommendation as their everyday default. Only after confirmation call `set_preference(mode="answer", main=<recommended id or name>)`. A team is not needed for this preference.
-5. Offer a few warm-up prompts based on handshake response and your knowledge of what user is working on. Call `consult` only if the user chooses it; setup itself must never spend consultation credit automatically.
+2. **Show the roster.** Call `list_companions`. Present each visible Companion with one sentence (its `hint`), then the teams briefly. This is a free catalogue read.
+3. **Explain how to use the system.**
+   - When routing is unclear, say *"discover the best companions setup for …"* — the `discover` ask flow returns a grounded setup (companions, mode, reshaped prompt) with a price band.
+   - The word *"companions"* in a request activates the Companion skills.
+   - Consultations and `discover` bill; directory reads (`list_companions`, `list_params`) are free.
+4. **Offer grounded starting points.** Review the user's actual recent work — recent conversations, repository activity, the current project — and propose a few concrete problems or questions worth bringing to Companions. Map each to a fitting Companion from the roster or to a `discover` ask, and say in one sentence why it would help. Run nothing until the user picks one.
 
-To change an existing default, agree on the new Companion and call `set_preference(mode="answer", main=...)` after confirmation. To remove it, call `clear_preference(mode="answer")` after confirmation. Both choices can be changed later.
+Before step 1, check once whether the Companions Portal is installed on this machine (`test -x ~/.portal/bin/portal`). If it is, recommend the local path instead of this plugin — Portal serves the same tools with local execution and an installer TUI (`portal harness add claude` takes over from the plugin); see `https://get.humx.ai`. Continue with the plugin only if the user prefers it.

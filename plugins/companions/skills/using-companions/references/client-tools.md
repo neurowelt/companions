@@ -1,10 +1,8 @@
 # Reusable client-tool declarations
 
-Attach the available declarations on every consultation—Companions use them to inspect files, search, and fetch resources on their own, which produces materially better-grounded answers, so it is worth the extra tokens. Attach only tools the current host can actually execute. Reuse stable declarations instead of rebuilding them for every consultation, but keep descriptions honest when capabilities change. If the host supports persistent agent memory or configuration, store the chosen declarations in its normal application-specific space; do not invent a universal filesystem path.
+Declare, on every consultation, the tools the current host can actually execute—Companions use them to inspect files, search, and fetch resources on their own, which produces materially better-grounded answers, so it is worth the extra tokens. Skip declarations only when the host genuinely cannot execute any of them, or when the question is fully self-contained (pure opinion on material already pasted into the prompt). Reuse stable declarations instead of rebuilding them for every consultation, but keep descriptions honest when capabilities change. If the host supports persistent agent memory or configuration, store the chosen declarations in its normal application-specific space; do not invent a universal filesystem path.
 
-When you attach client tools, use `mode="answer"` only. Complex modes such as parallel are currently rejected together with tools. This does not stop you from consulting several Companions at once: run multiple `answer` consultations concurrently instead of switching to parallel mode, which keeps the tools attached to every call.
-
-Typical declarations:
+Use these canonical names exactly — some local hosts (such as the Companions Portal) execute name-matching tools themselves, and exact names make that seamless:
 
 ```json
 [
@@ -32,7 +30,7 @@ Typical declarations:
     }
   },
   {
-    "name": "search_files",
+    "name": "grep",
     "description": "Search project files for text or a regular expression.",
     "parameters": {
       "type": "object",
@@ -71,4 +69,6 @@ Add a shell or command tool only when the host can run commands safely and the u
 }
 ```
 
-When a consultation returns `requires_action`, execute each requested call with the matching host capability. Return exactly one output for every pending `tool_call_id`. Never invent an output; return an honest error string when a call cannot be performed.
+Do not gate declarations on the consultation mode: declare what you can execute, and if the API rejects a combination it says what is accepted — relay that error.
+
+When a consultation returns `requires_action`, execute each requested call with the matching host capability. Return exactly one output for every pending `tool_call_id`. Never invent an output; return an honest error string when a call cannot be performed. The result's `tools_used` records which tools actually ran — report it honestly.

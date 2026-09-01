@@ -27,13 +27,13 @@ Recommend one to three Companions whose perspectives differ in a useful way. Sta
 
 Get the user's agreement before spending credit unless they already named the Companions, explicitly asked you to choose, or gave standing permission. For one Companion, the saved everyday default is the natural starting point. For several, choose the group for this problem and pass every participant explicitly; do not treat any saved group as the answer.
 
-If the roster is unfamiliar, inspect it. Ask the ferryman only when routing remains materially unclear.
+If the roster is unfamiliar, inspect it with `list_companions` (free) and propose from it yourself. When routing remains materially unclear, offer `discover` with the task — it returns a grounded setup with a price band and bills its small metered cost.
 
 ## Stage 2: Consult independently
 
-Give every Companion the same complete frame. For independent perspectives, do not reveal another Companion's answer before the first response. Always attach the available reusable client-tool declarations to every consultation so each Companion can inspect files, search, or fetch resources itself. When you attach client tools, use `mode="answer"` only; complex modes such as parallel are currently rejected together with tools. This does not stop you from consulting several Companions at once: run multiple `answer` consultations concurrently instead of switching to parallel mode, which keeps the tools attached to every call. See the [client tool declarations](../using-companions/references/client-tools.md).
+Give every Companion the same complete frame. For independent perspectives, do not reveal another Companion's answer before the first response. Always declare the reusable client tools the host can currently execute on every consultation so each Companion can inspect files, search, or fetch resources itself. See the [client tool declarations](../using-companions/references/client-tools.md).
 
-Use ordinary `answer` consultations for separate one-person views. Follow the continuation protocol for pending work or tool calls. Never simulate a Companion when the service is unavailable.
+Use ordinary `answer` consultations for separate one-person views. Each `consult` bills and returns a receipt with a `job_id`; collect every run with `get_answer`, and follow the continuation protocol for pending work or tool calls. Never simulate a Companion when the service is unavailable.
 
 ## Stage 4: Translate without flattening
 

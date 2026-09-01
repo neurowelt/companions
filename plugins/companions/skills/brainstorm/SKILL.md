@@ -35,7 +35,7 @@ Explain that thinker count controls perspective diversity and ideas per thinker 
 
 If Companions is unavailable or no suitable thinkers exist, stop and say so. Do not silently replace them with ordinary subagents.
 
-Whenever you consult thinkers, always attach the available reusable client-tool declarations so they can read the actual project—code, docs, prior art—instead of relying only on the charter. This grounds their ideas in your real system. When you attach client tools, use `mode="answer"` only; complex modes such as parallel are currently rejected together with tools. This does not stop you from consulting several thinkers at once: run multiple `answer` consultations concurrently instead of switching to parallel mode, which keeps the tools attached to every call. See [client tool declarations](../using-companions/references/client-tools.md).
+Whenever you consult thinkers, always declare the reusable client tools the host can currently execute so they can read the actual project—code, docs, prior art—instead of relying only on the charter. This grounds their ideas in your real system. Each `consult` bills and returns a receipt with a `job_id`; collect every run with `get_answer`. See [client tool declarations](../using-companions/references/client-tools.md).
 
 Write the human-facing artifacts under:
 

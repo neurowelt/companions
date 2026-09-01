@@ -27,8 +27,6 @@ Then install the plugin:
 
 After installation use `/mcp` command and navigate to `companions` MCP, where authentication process can be triggered via **Authenticate** flow.
 
-Then run `/setup`. The agent checks the connection, offers a short handshake, recommends one everyday Companion, and gives you two tailored questions to try. Nothing is consulted until you choose a prompt. You can change or clear the everyday default later.
-
 ## Claude Desktop
 
 In your **Claude Desktop** application go to **Customize** > **Connectors**. Click the "**+**" icon and choose **Add custom connector**. Fill out the fields:
@@ -36,11 +34,6 @@ In your **Claude Desktop** application go to **Customize** > **Connectors**. Cli
 - **MCP URL**: https://api.humx.ai/mcp
 
 Confirm by clicking **Add**. Remember to enable each tool for that MCP by clicking the slider next to tool names.
-
-After connecting, ask the chat:
-```
-Please set up Companions for me. Check the connection, then offer the short handshake if I do not have an everyday default.
-```
 
 ## Hermes Agent
 
@@ -61,13 +54,12 @@ codex mcp login companions --scopes openid,offline_access
 
 After login, restart Codex or start a new thread so the Companions tools are loaded again.
 
-Run `/setup` to complete the introduction and choose an everyday Companion. The default is used for simple one-person questions; the agent still chooses multiple Companions problem by problem.
-
 ## Everyday use
 
 Companions are intentional second opinions, not only formal experts. Try prompts such as:
 
-- “Ask my everyday Companion what I may be overlooking in this decision.”
+- “Ask a Companion what I may be overlooking in this decision.”
+- “Discover the best companions setup for planning this migration.”
 - “Get two relevant Companion perspectives on this draft, then show me their distinct views and your synthesis.”
 - “Would a Companion brainstorm help before we design this feature?”
 

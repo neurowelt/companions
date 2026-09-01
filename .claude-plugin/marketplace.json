@@ -7,8 +7,8 @@
   "plugins": [
     {
       "name": "companions",
-      "description": "Consult a panel of expert personas via MCP. handshake / meet / consult / list_companions / check_balance.",
-      "version": "0.6.3",
+      "description": "Consult expert Companion personas via MCP. list_companions / discover / consult / get_answer / list_params / check_balance.",
+      "version": "1.0.0",
       "source": "./plugins/companions",
       "author": {
         "name": "humx.ai"
