@@ -1,4 +1,6 @@
-.worktrees/
-.private-journal/
-.DS_Store
+# Secrets
 .env
+
+# General
+.DS_Store
+archive/
