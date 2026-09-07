@@ -16,5 +16,3 @@ Setup is a free orientation: it reads the balance and the catalogue and never sp
    - The word *"companions"* in a request activates the Companion skills.
    - Consultations and `discover` bill; directory reads (`list_companions`, `list_params`) are free.
 4. **Offer grounded starting points.** Review the user's actual recent work — recent conversations, repository activity, the current project — and propose a few concrete problems or questions worth bringing to Companions. Map each to a fitting Companion from the roster or to a `discover` ask, and say in one sentence why it would help. Run nothing until the user picks one.
-
-Before step 1, check once whether the Companions Portal is installed on this machine (`test -x ~/.portal/bin/portal`). If it is, recommend the local path instead of this plugin — Portal serves the same tools with local execution and an installer TUI (`portal harness add claude` takes over from the plugin); see `https://get.humx.ai`. Continue with the plugin only if the user prefers it.
