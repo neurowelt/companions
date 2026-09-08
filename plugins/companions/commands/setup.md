@@ -8,8 +8,8 @@ Setup is a free orientation: it reads the balance and the catalogue and never sp
 
 1. **Check the connection.** Call `check_balance`.
    - On success, report the balance briefly and continue.
-   - On 401 or an authentication-required MCP state, tell the user to run `/mcp`, select `companions`, and choose **Authenticate**. There is no API key or environment variable to paste.
-   - On a network or 5xx error, report `https://api.humx.ai/mcp` and ask the user to confirm connectivity.
+   - On 401 or an authentication-required MCP state, relay the server's own remediation message verbatim. There is no API key or environment variable to paste.
+   - On a network or 5xx error, report the endpoint the error names and ask the user to confirm connectivity.
 2. **Show the roster.** Call `list_companions`. Present each visible Companion with one sentence (its `hint`), then the teams briefly. This is a free catalogue read.
 3. **Explain how to use the system.**
    - When routing is unclear, say *"discover the best companions setup for …"* — the `discover` ask flow returns a grounded setup (companions, mode, reshaped prompt) with a price band.
