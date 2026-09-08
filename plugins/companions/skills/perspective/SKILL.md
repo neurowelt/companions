@@ -25,7 +25,7 @@ For critique, include the draft or artifact and ask what works, what is weak or 
 
 Recommend one to three Companions whose perspectives differ in a useful way. State why each one fits. Use one for a quick second opinion; use several when disagreement or coverage is valuable.
 
-Get the user's agreement before spending credit unless they already named the Companions, explicitly asked you to choose, or gave standing permission. For one Companion, the saved everyday default is the natural starting point. For several, choose the group for this problem and pass every participant explicitly; do not treat any saved group as the answer.
+Get the user's agreement before spending credit unless they already named the Companions, explicitly asked you to choose, or gave standing permission. For one Companion, the user's everyday Companion is the natural proposal; send it as `main`. For several, choose the group for this problem and pass every participant explicitly (a chosen team goes in as its `team_<uuid>` id, with `main` when the mode needs a lead); the server infers nothing, so do not treat any saved or previous group as the answer.
 
 If the roster is unfamiliar, inspect it with `list_companions` (free) and propose from it yourself. When routing remains materially unclear, offer `discover` with the task — it returns a grounded setup with a price band and bills its small metered cost.
 
@@ -33,7 +33,7 @@ If the roster is unfamiliar, inspect it with `list_companions` (free) and propos
 
 Give every Companion the same complete frame. For independent perspectives, do not reveal another Companion's answer before the first response. Always declare the reusable client tools the host can currently execute on every consultation so each Companion can inspect files, search, or fetch resources itself. See the [client tool declarations](../using-companions/references/client-tools.md).
 
-Use ordinary `answer` consultations for separate one-person views. Each `consult` bills and returns a receipt with a `job_id`; collect every run with `get_answer`, and follow the continuation protocol for pending work or tool calls. Never simulate a Companion when the service is unavailable.
+Use ordinary `answer` consultations, each with that person's `main`, for separate one-person views. Each `consult` bills and returns a receipt with a `job_id`; collect every run with `get_answer`, and follow the continuation protocol for pending work or tool calls. Never simulate a Companion when the service is unavailable.
 
 ## Stage 4: Translate without flattening
 

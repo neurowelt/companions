@@ -38,15 +38,34 @@ When the user asks to use Companions without naming one ("use companions for thi
 
 The everyday workflow is: clarify if needed → propose → consult. Keep friction minimal; do not force extra steps on the user.
 
-## Everyday default
+## Name the Companions on every call
+
+`consult` never infers who answers. Every new consultation names its Companions explicitly; the API refuses a call that leaves a required field out and never fills it from a saved preference, a previous run, or a persona.
+
+| mode | `main` | `participants` |
+|---|---|---|
+| `answer` | required — the one Companion | not allowed |
+| `parallel` | not used | required |
+| `parallel_with_main` | required — the aggregator | required |
+| `discussion` | required — the lead | required |
+
+Entries are Companion names or `cmp_<uuid>` ids. `participants` also accepts `team_<uuid>` ids; the server expands a team to its members visible to the user. A bare name is always a Companion, never a team.
+
+```
+consult(mode="answer", main="Ada", prompt=...)
+consult(mode="parallel", participants=["Ada", "cmp_<uuid>"], prompt=...)
+consult(mode="parallel_with_main", main="Ada", participants=["team_<uuid>"], prompt=...)
+```
 
 For an ordinary one-person question:
 
-1. Use `mode="answer"`.
-2. Omit `main` to use the user's saved everyday Companion when one exists — `consult` honors it automatically.
-3. If no default exists, agree on a Companion with the user, remember their choice in the host application's normal persistent memory or configuration, and pass it as `main` on later calls. Never imply that the choice is permanent.
+1. Use `mode="answer"` with `main=<the Companion>`.
+2. If the user has an everyday Companion, keep that choice in the host application's normal persistent memory or configuration and send it as `main` on each later call — no need to re-ask once agreed. Never imply that the choice is permanent.
+3. If none is agreed yet, propose one (above) and agree with the user first.
 
-For more than one Companion, select the group for the specific problem and pass every participant explicitly. A saved everyday default may be one candidate, but it does not determine the group.
+For more than one Companion, select the group for the specific problem and pass every participant explicitly, plus `main` when the mode needs a lead. A saved everyday default may be one candidate, but it does not determine the group. A previously used group or team is never reused automatically; pass a `team_<uuid>` only when the user chose that team for this problem.
+
+Continuing a job (`get_answer`, `submit_tool_outputs`, `submit_reply`) needs no roster.
 
 ## Give useful context
 

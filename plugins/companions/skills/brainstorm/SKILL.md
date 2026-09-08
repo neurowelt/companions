@@ -31,7 +31,7 @@ Choose meaningfully different Companions with the user and reuse them throughout
 - **Extensive:** 5 thinkers, distinct ideas without a fixed quota.
 - **Custom:** user chooses both values.
 
-Explain that thinker count controls perspective diversity and ideas per thinker controls depth. The user must approve both values and the Companion choices before consultation begins. Select the group for this problem and pass it explicitly; do not reuse a saved group automatically.
+Explain that thinker count controls perspective diversity and ideas per thinker controls depth. The user must approve both values and the Companion choices before consultation begins. Every consultation names its thinkers explicitly — as `participants` (or a chosen `team_<uuid>`), plus `main` where the mode needs a lead; the server infers nothing from a saved or previous group.
 
 If Companions is unavailable or no suitable thinkers exist, stop and say so. Do not silently replace them with ordinary subagents.
 
