@@ -42,19 +42,12 @@ The everyday workflow is: clarify if needed → propose → consult. Keep fricti
 
 `consult` never infers who answers. Every new consultation names its Companions explicitly; the API refuses a call that leaves a required field out and never fills it from a saved preference, a previous run, or a persona.
 
-| mode | `main` | `participants` |
-|---|---|---|
-| `answer` | required — the one Companion | not allowed |
-| `parallel` | not used | required |
-| `parallel_with_main` | required — the aggregator | required |
-| `discussion` | required — the lead | required |
+`main` is the one Companion who answers or leads; `participants` are the others. `list_params` lists every currently available mode with a one-line explanation and whether it needs `main`, `participants` or both — read it rather than memorising a table. A call missing a field is refused by the API, which names the field; relay that and adjust.
 
 Entries are Companion names or `cmp_<uuid>` ids. `participants` also accepts `team_<uuid>` ids; the server expands a team to its members visible to the user. A bare name is always a Companion, never a team.
 
 ```
 consult(mode="answer", main="Ada", prompt=...)
-consult(mode="parallel", participants=["Ada", "cmp_<uuid>"], prompt=...)
-consult(mode="parallel_with_main", main="Ada", participants=["team_<uuid>"], prompt=...)
 ```
 
 For an ordinary one-person question:
