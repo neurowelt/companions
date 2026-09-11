@@ -15,6 +15,17 @@
                 "authentication": "ON_INSTALL"
             },
             "category": "Productivity"
+        },
+        {
+            "name": "portal",
+            "source": {
+                "source": "local",
+                "path": "./plugins/portal"
+            },
+            "policy": {
+                "installation": "AVAILABLE"
+            },
+            "category": "Productivity"
         }
     ]
 }

@@ -2,6 +2,21 @@
 
 All notable changes to the Companions plugin are documented in this file.
 
+## [0.7.0] - 2026-09-11
+
+### Added
+- New `portal` plugin: the same commands and skills, connected to the local Portal daemon instead of the remote MCP. Installed by `portal setup`.
+- New `/discover` command: asks the service for the best Companions setup for a task, with a price band.
+
+### Changed
+- Commands reduced from 12 to 5: `/setup`, `/consult`, `/discover`, `/meet`, `/balance`. The skills are now the single home for how the system works.
+- Every `consult` names its Companions explicitly through `main` and `participants`. Modes and their requirements come from `list_params`.
+- `/setup` checks the connection, shows the roster and suggests starting points without spending credit. It no longer depends on the harness.
+- Plugin descriptions rewritten to say what Companions are.
+
+### Removed
+- `/handshake`, `/preferences`, `/set-preference`, `/clear-preference`, `/list-companions`, `/list-teams`, `/list-models` and `/describe-companions`. `/check-balance` is now `/balance`.
+
 ## [0.6.3] - 2026-07-22
 
 ### Changed
@@ -145,6 +160,7 @@ All notable changes to the Companions plugin are documented in this file.
 - Commands: `/companions-balance`, `/companions-consult`, `/companions-discover`, `/companions-setup`. (`b5de196`)
 - CI workflow for automatic version bumping and a `bump-version.sh` script. (`b5de196`)
 
+[0.7.0]: https://github.com/neurowelt/companions/releases/tag/v0.7.0
 [0.6.3]: https://github.com/neurowelt/companions/releases/tag/v0.6.3
 [0.6.2]: https://github.com/neurowelt/companions/releases/tag/v0.6.2
 [0.6.1]: https://github.com/neurowelt/companions/releases/tag/v0.6.1
@@ -169,5 +185,3 @@ All notable changes to the Companions plugin are documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
-Version bumps are derived automatically from [Conventional Commits](https://www.conventionalcommits.org/)
-by CI, so each release below corresponds to an automated version bump.

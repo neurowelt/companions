@@ -1,7 +1,7 @@
 {
   "name": "companions",
-  "description": "Bring additional expert perspectives into everyday questions, decisions, critiques, and brainstorms. Includes guided setup, task-based discovery of the best Companions setup, and workflows that preserve distinct voices while translating them into the user's language.",
-  "version": "1.0.0",
+  "description": "Companions bring expert perspective into your everyday work: a second opinion on a decision, critique of plans, different framing for a problem, or actually novel ideas. Connects through the remote Companions MCP.",
+  "version": "0.7.0",
   "author": {
     "name": "humx.ai"
   },

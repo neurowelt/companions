@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
-# Bump the companions plugin version across all manifests, then commit and tag.
+# Bump both plugin versions across all manifests, then commit.
 #
 # Usage:
 #   scripts/bump-version.sh show
 #   scripts/bump-version.sh patch | minor | major
-#   scripts/bump-version.sh set X.Y.Z
+#   scripts/bump-version.sh set X.Y.Z[-PRERELEASE]   e.g. set 1.0.0-alpha
 #   scripts/bump-version.sh changed [BASE [HEAD]]
-#       exit 0 if shipping paths changed (plugins/companions/, .claude-plugin/, .agents/)
-#       exit 1 if nothing relevant changed (README, scripts/, .github/ don't count)
+#       exit 0 if shipping paths changed (plugins/, .claude-plugin/, .agents/)
+#       exit 1 if nothing relevant changed (README, scripts/ don't count)
 #       defaults: BASE=HEAD~1, HEAD=HEAD
 #
 # Flags:
@@ -19,10 +19,12 @@
 # Updates version fields in:
 #   plugins/companions/.claude-plugin/plugin.json .version
 #   plugins/companions/.codex-plugin/plugin.json  .version
-#   .claude-plugin/marketplace.json              .plugins[0].version
+#   plugins/portal/.claude-plugin/plugin.json     .version
+#   plugins/portal/.codex-plugin/plugin.json      .version
+#   .claude-plugin/marketplace.json              .plugins[].version
 #
-# Then creates commit "chore(release): vX.Y.Z". CI tags vX.Y.Z when it is pushed.
-# Does not push or tag — prints the push command for you to run.
+# Then creates commit "chore(release): vX.Y.Z".
+# Does not push or tag — prints the commands for you to run.
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
@@ -30,7 +32,10 @@ ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 MANIFESTS=(
   "plugins/companions/.claude-plugin/plugin.json::.version"
   "plugins/companions/.codex-plugin/plugin.json::.version"
+  "plugins/portal/.claude-plugin/plugin.json::.version"
+  "plugins/portal/.codex-plugin/plugin.json::.version"
   ".claude-plugin/marketplace.json::.plugins[0].version"
+  ".claude-plugin/marketplace.json::.plugins[1].version"
 )
 
 CANONICAL="plugins/companions/.claude-plugin/plugin.json"
@@ -93,17 +98,19 @@ if [[ "$mode" == "changed" ]]; then
   base="${1:-HEAD~1}"
   head="${2:-HEAD}"
   changed="$(git -C "$ROOT" diff --name-only "$base" "$head" -- \
-    'plugins/companions' '.claude-plugin' '.agents' 2>/dev/null || true)"
+    'plugins' '.claude-plugin' '.agents' 2>/dev/null || true)"
   if [[ -n "$changed" ]]; then
     echo "shipping-path changes between $base..$head:"
     echo "$changed" | sed 's/^/  /'
     exit 0
   fi
-  echo "no shipping-path changes between $base..$head (only README/scripts/.github)"
+  echo "no shipping-path changes between $base..$head (only README/scripts)"
   exit 1
 fi
 
-IFS=. read -r maj min pat <<<"$current"
+core="${current%%[-+]*}"
+IFS=. read -r maj min pat <<<"$core"
+pre=""
 case "$mode" in
   patch) pat=$((pat+1));;
   minor) min=$((min+1)); pat=0;;
@@ -111,13 +118,15 @@ case "$mode" in
   set)
     [[ $# -ge 1 ]] || { echo "error: 'set' needs a version argument" >&2; exit 2; }
     new="$1"
-    semver_re='^[0-9]+\.[0-9]+\.[0-9]+$'
-    [[ "$new" =~ $semver_re ]] || { echo "error: version must be X.Y.Z" >&2; exit 2; }
-    maj="${new%%.*}"; rest="${new#*.}"; min="${rest%%.*}"; pat="${rest#*.}"
+    semver_re='^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$'
+    [[ "$new" =~ $semver_re ]] || { echo "error: version must be X.Y.Z or X.Y.Z-PRERELEASE" >&2; exit 2; }
+    pre="${new#"${new%%-*}"}"
+    core="${new%%-*}"
+    maj="${core%%.*}"; rest="${core#*.}"; min="${rest%%.*}"; pat="${rest#*.}"
     ;;
   *) usage;;
 esac
-new_version="${maj}.${min}.${pat}"
+new_version="${maj}.${min}.${pat}${pre}"
 
 if [[ "$new_version" == "$current" ]]; then
   echo "nothing to do (already at $current)" >&2
@@ -166,5 +175,5 @@ git -C "$ROOT" commit -m "chore(release): v${new_version}${message_suffix}"
 
 echo
 echo "committed release v${new_version}"
-echo "push it and CI will tag v${new_version}:"
-echo "  git push origin HEAD"
+echo "tag and push it:"
+echo "  git tag v${new_version} && git push origin HEAD v${new_version}"

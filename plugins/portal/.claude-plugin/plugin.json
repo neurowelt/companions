@@ -1,0 +1,18 @@
+{
+  "name": "portal",
+  "description": "Companions bring expert perspective into your everyday work: a second opinion on a decision, critique of plans, different framing for a problem, or actually novel ideas. Connects through Portal, a local daemon that runs Companions tool calls on your machine (get.humx.ai).",
+  "version": "0.7.0",
+  "author": {
+    "name": "humx.ai"
+  },
+  "license": "All rights reserved",
+  "keywords": [
+    "companions",
+    "experts",
+    "consult",
+    "mcp",
+    "multi-perspective",
+    "second-opinion",
+    "deliberation"
+  ]
+}

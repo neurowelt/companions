@@ -4,3 +4,5 @@
 # General
 .DS_Store
 archive/
+.claude/
+.codex/

@@ -1,19 +1,47 @@
 # Companions
 
-Companions brings additional expert perspectives into everyday work: a second opinion on a decision, critique of a draft, a different framing for a problem, or a human-steered brainstorm.
+Companions bring expert perspective into your everyday work: a second opinion on a decision, critique of plans, different framing for a problem, or actually novel ideas.
 
-In order to interact with Companions API we provide an MCP server hosted at `https://api.humx.ai/mcp` that your AI harness of choice can interact with.
+Most importantly, you can start using Companions in any harness of your choice [using Portal](#portal) or through our [remote MCP](#remote-mcp).
 
 > [!TIP]
-> Make sure to check out our [Wiki page](https://github.com/neurowelt/companions/wiki/Companions) to learn about available Companions!
+> For the best experience we recommend installing [Portal](#portal) – a small local MCP that connects to our service and handles tool calls for Companions.
 
-To connect your harness of choice follow one of these guides:
+Make sure to check out our [Wiki page](https://github.com/neurowelt/companions/wiki/Companions) to learn about available Companions.
+
+## Portal
+
+Companions Portal is a small binary running our MCP locally on your computer. It authenticates with our service and connects to your installed harnesses.
+
+It functions as a layer between AI harness and our service. As your agent connects to it and sends tasks to Companions, when in response they require some tool calls, such as file reading or writing, Portal can intercept these tool calls and execute them without engaging your agent, sending response back to our service. Without it, requested tool calls are executed by your agent.
+
+Install it by running the following command in your terminal:
+
+macOS / Linux:
+```bash
+curl -fsSL https://get.humx.ai/install.sh | sh
+```
+
+Windows (PowerShell):
+```powershell
+irm https://get.humx.ai/install.ps1 | iex
+```
+
+The installer downloads the binary for your platform, verifies it, puts `portal` on your PATH and runs `portal setup` for you to authenticate, configure installation, tools and preferences. Run `portal setup` again to add a harness later and `portal update` to update Portal.
+
+Portal installs the `portal` plugin from this marketplace into harnesses chosen during `setup`. If the `companions` plugin for [Remote MCP](#remote-mcp) is already installed, `setup` offers to disable it, as both expose the same tools.
+
+## Remote MCP
+
+We provide a remote MCP server hosted at `https://api.humx.ai/mcp` that your AI harness of choice can interact with.
+
+Choose the harness you want to connect for instructions:
 - [Claude Code](#claude-code)
 - [Claude Desktop](#claude-desktop)
 - [Hermes Agent](#hermes-agent)
 - [Codex CLI](#codex-cli)
 
-## Claude Code
+### Claude Code
 
 Add the marketplace:
 ```
@@ -27,7 +55,7 @@ Then install the plugin:
 
 After installation use `/mcp` command and navigate to `companions` MCP, where authentication process can be triggered via **Authenticate** flow.
 
-## Claude Desktop
+### Claude Desktop
 
 In your **Claude Desktop** application go to **Customize** > **Connectors**. Click the "**+**" icon and choose **Add custom connector**. Fill out the fields:
 - **Name**: Companions
@@ -35,14 +63,14 @@ In your **Claude Desktop** application go to **Customize** > **Connectors**. Cli
 
 Confirm by clicking **Add**. Remember to enable each tool for that MCP by clicking the slider next to tool names.
 
-## Hermes Agent
+### Hermes Agent
 
 Connecting MCP to Hermes is easiest done using the following command:
 ```bash
 hermes mcp add --url https://api.humx.ai/mcp --auth oauth companions
 ```
 
-## Codex CLI
+### Codex CLI
 
 You can add the marketplace by using `/plugins` command within Codex CLI, choosing **Add Marketplace** and pasting the link to this repository. Codex will automatically open browser's window for authentication.
 
@@ -53,14 +81,3 @@ codex mcp login companions --scopes openid,offline_access
 ```
 
 After login, restart Codex or start a new thread so the Companions tools are loaded again.
-
-## Everyday use
-
-Companions are intentional second opinions, not only formal experts. Try prompts such as:
-
-- “Ask a Companion what I may be overlooking in this decision.”
-- “Discover the best companions setup for planning this migration.”
-- “Get two relevant Companion perspectives on this draft, then show me their distinct views and your synthesis.”
-- “Would a Companion brainstorm help before we design this feature?”
-
-The agent should explain why it wants to consult a particular Companion. It translates responses into your preferred language and structure while preserving each Companion's distinct point of view. Ask for the raw response whenever you want it.

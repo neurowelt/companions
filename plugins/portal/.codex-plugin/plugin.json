@@ -1,7 +1,7 @@
 {
-  "name": "companions",
+  "name": "portal",
   "version": "0.7.0",
-  "description": "Companions bring expert perspective into your everyday work: a second opinion on a decision, critique of plans, different framing for a problem, or actually novel ideas. Connects through the remote Companions MCP.",
+  "description": "Companions bring expert perspective into your everyday work: a second opinion on a decision, critique of plans, different framing for a problem, or actually novel ideas. Connects through Portal, a local daemon that runs Companions tool calls on your machine (get.humx.ai).",
   "author": {
     "name": "humx.ai"
   },
@@ -18,9 +18,9 @@
   "skills": "./skills/",
   "mcpServers": "./.mcp.json",
   "interface": {
-    "displayName": "Companions",
+    "displayName": "Portal",
     "shortDescription": "Expert perspectives for everyday work",
-    "longDescription": "Companions bring expert perspective into your everyday work: a second opinion on a decision, critique of plans, different framing for a problem, or actually novel ideas. Connects through the remote Companions MCP.",
+    "longDescription": "Companions bring expert perspective into your everyday work: a second opinion on a decision, critique of plans, different framing for a problem, or actually novel ideas. Connects through Portal, a local daemon that runs Companions tool calls on your machine (get.humx.ai).",
     "developerName": "humx.ai",
     "category": "Productivity",
     "capabilities": [

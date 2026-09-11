@@ -1,0 +1,17 @@
+---
+description: Meet a Companion — have one introduce itself to your user, tailored to your project.
+argument-hint: "<companion> [note about the user and project]"
+---
+
+`/meet` is a hello, not setup — it runs through `consult` and bills like any answer run.
+
+Arguments: `$ARGUMENTS` — the companion to meet (a name or `cmp_<uuid>` id), optionally followed by a note about the user and/or project. E.g. `/meet Kris` or `/meet Kris — solo dev building an MCP bridge`.
+
+1. Resolve the target from `$ARGUMENTS`, using `list_companions` when needed. For an unknown name, show the visible names; for `ambiguous`, resolve the intended stable id before retrying.
+2. Compose a first-person introduction prompt along these lines, filling the portrait from `$ARGUMENTS` and what you know:
+
+   > Introduce yourself to my user in the first person: who you are, how you think, and what kinds of questions you are best at. My user: <short honest portrait — role, current project, what they care about>. Keep it warm and brief, and end with one question you would enjoy being asked.
+
+3. Call `consult` with `mode="answer"`, `main=<companion>`, and that prompt, following the `using-companions` skill. Relay the introduction with attribution.
+
+On 401 or an authentication failure, use the `/setup` walkthrough.
