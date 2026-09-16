@@ -27,7 +27,7 @@ Recommend one to three Companions whose perspectives differ in a useful way. Sta
 
 Get the user's agreement before spending credit unless they already named the Companions, explicitly asked you to choose, or gave standing permission. For one Companion, the user's everyday Companion is the natural proposal; send it as `main`. For several, choose the group for this problem and pass every participant explicitly (a chosen team goes in as its `team_<uuid>` id, with `main` when the mode needs a lead); the server infers nothing, so do not treat any saved or previous group as the answer.
 
-If the roster is unfamiliar, inspect it with `list_companions` (free) and propose from it yourself. When routing remains materially unclear, offer `discover` with the task — it returns a grounded setup with a price band and bills its small metered cost.
+If the roster is unfamiliar, inspect it with `list_companions` (free) and propose from it yourself: if the tool advertises `view`, filter by the question first (`list_companions(view="companions", query=…, kind=…)`), read that one page, and continue with `next_cursor` only when the shortlist is insufficient or the user asks for everything; otherwise call `list_companions()` and filter its complete roster yourself. Use `refs` for the full profiles of the shortlisted Companions. When routing remains materially unclear, offer `discover` with the task — it returns a grounded setup with a price band and bills its small metered cost.
 
 ## Stage 2: Consult independently
 

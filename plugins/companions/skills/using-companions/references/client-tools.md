@@ -2,7 +2,7 @@
 
 Declare, on every consultation, the tools the current host can actually execute—Companions use them to inspect files, search, and fetch resources on their own, which produces materially better-grounded answers, so it is worth the extra tokens. Skip declarations only when the host genuinely cannot execute any of them, or when the question is fully self-contained (pure opinion on material already pasted into the prompt). Reuse stable declarations instead of rebuilding them for every consultation, but keep descriptions honest when capabilities change. If the host supports persistent agent memory or configuration, store the chosen declarations in its normal application-specific space; do not invent a universal filesystem path.
 
-Use these canonical names exactly — some local hosts (such as the Companions Portal) execute name-matching tools themselves, and exact names make that seamless:
+Use these canonical names exactly — they keep declarations reusable across hosts and readable in transcripts. A local host such as the Companions Portal does not execute your declarations by name: it adds its own tools alongside whatever you declare, and yours come back to you under the names you gave them:
 
 ```json
 [

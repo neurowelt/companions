@@ -9,6 +9,11 @@ line. Compatible releases may advance each component's patch independently.
 
 ## [Unreleased]
 
+### Changed
+
+- `companions`: `/setup` now shows one page of the companion directory instead of implying a complete roster, says when more results exist, and explains how to browse teams and open a team's members. The skills filter by the task first, continue only when the shortlist is insufficient or the user asks for everything, and use `refs` for the shortlisted full profiles. The guidance follows the advertised tool schema, so it still works against an older `list_companions` that offers no `view` argument.
+- `portal`: the same one-page `/setup`, team and member browsing, and filter/continue/`refs` guidance for the Portal plugin — unchanged behaviour against an older Portal daemon whose `list_companions` advertises no `view`.
+
 ## [0.7.0] - 2026-09-11
 
 ### Added

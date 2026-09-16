@@ -32,7 +32,7 @@ Skip consultation for routine facts, simple operations, or work you already know
 When the user asks to use Companions without naming one ("use companions for this"), run the proposal flow yourself:
 
 1. Clarify first if the description is thin (above).
-2. Call `list_companions` (free), filter the roster by what you know of the task and context, and propose one or a few Companions, each with a one-line reason.
+2. Call `list_companions` (free) and propose one or a few Companions, each with a one-line reason. If the tool advertises `view`, filter by the task first — `list_companions(view="companions", query=…, kind=…)` — read that one page, and continue with `next_cursor` only when the shortlist is insufficient or the user wants the full list; otherwise call `list_companions()` and filter its complete roster yourself. Either way, use `refs` for the full profiles of the shortlisted Companions.
 3. Alongside your own proposition you may offer `discover`: "I can also run the discover flow to have the system propose the best setup." It returns a grounded setup (companions, mode, reshaped prompt) with a price band and bills a small metered cost like any run. It is great for exploring what the system can do — suggest it, never push it as the primary path.
 4. Consult once the user agrees.
 
@@ -81,6 +81,6 @@ Conceptual compression means removing repetition and shorthand while keeping the
 
 ## First use and protocol
 
-On first use, run the `/setup` flow: check the connection, show the roster from `list_companions`, explain how the system is used, and offer starting questions grounded in the user's actual recent work. Setup is free and never spends consultation credit. Do not ask the user to clear or restart the session.
+On first use, run the `/setup` flow: check the connection, show the roster from `list_companions` (one filtered page when the tool advertises `view`, the complete roster otherwise), explain how the system is used, and offer starting questions grounded in the user's actual recent work. Setup is free and never spends consultation credit. Do not ask the user to clear or restart the session.
 
 Only `consult` and `discover` bill. `consult` returns a receipt with a `job_id`, never the answer: collect every run with `get_answer`, the only tool that returns content. `pending` means still running, not lost — never repeat `consult` to retrieve it. For continuation states such as `pending`, `requires_action`, and `needs_reply`, follow [the consultation protocol](references/protocol.md).
