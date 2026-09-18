@@ -31,7 +31,7 @@ If the roster is unfamiliar, inspect it with `list_companions` (free) and propos
 
 ## Stage 2: Consult independently
 
-Give every Companion the same complete frame. For independent perspectives, do not reveal another Companion's answer before the first response. Always declare the reusable client tools the host can currently execute on every consultation so each Companion can inspect files, search, or fetch resources itself. See the [client tool declarations](../using-companions/references/client-tools.md).
+Give every Companion the same complete frame. For independent perspectives, do not reveal another Companion's answer before the first response. Always declare the reusable client tools the host can currently execute on every consultation so each Companion can inspect files, search, or fetch resources itself. See the [client tool declarations](references/client-tools.md).
 
 Use ordinary `answer` consultations, each with that person's `main`, for separate one-person views. Each `consult` bills and returns a receipt with a `job_id`; collect every run with `get_answer`, and follow the continuation protocol for pending work or tool calls. Never simulate a Companion when the service is unavailable.
 

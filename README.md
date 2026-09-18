@@ -27,9 +27,11 @@ Windows (PowerShell):
 irm https://get.humx.ai/install.ps1 | iex
 ```
 
-The installer downloads the binary for your platform, verifies it, puts `portal` on your PATH and runs `portal setup` for you to authenticate, configure installation, tools and preferences. Run `portal setup` again to add a harness later and `portal update` to update Portal.
+The installer downloads the binary for your platform, verifies it, puts `portal` on your PATH and runs `portal setup` for you to authenticate, configure installation, tools and preferences. Run `portal setup` again to add a harness later. `portal update` updates Portal and offers to update the Companions plugin in Claude Code and Codex, and its skills in Hermes. Use `portal update --plugins-only` to check and update only the plugins and skills. Portal asks before running the host update commands; in a non-interactive terminal it prints manual instructions.
 
-Portal installs the `portal` plugin from this marketplace into harnesses chosen during `setup`. If the `companions` plugin for [Remote MCP](#remote-mcp) is already installed, `setup` offers to disable it, as both expose the same tools.
+Portal installs the `portal` plugin from this marketplace into Claude Code and Codex when chosen during `setup`, and installs its skills individually into Hermes. If the `companions` plugin for [Remote MCP](#remote-mcp) is already installed, `setup` offers to disable it, as both expose the same tools.
+
+Plugin updates use the Claude Code and Codex CLIs. If a CLI is missing, Portal prints manual guidance. In Codex Desktop, use the app's plugin interface, or install the Codex CLI and run the printed commands. Reload plugins in Claude Code, restart Codex or open a new thread, and start a new Hermes session after updating. Claude Desktop's remote connector is configured separately through [Connectors](#claude-desktop).
 
 ## Remote MCP
 
