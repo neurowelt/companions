@@ -9,6 +9,12 @@ line. Compatible releases may advance each component's patch independently.
 
 ## [Unreleased]
 
+## [0.8.0] - 2026-09-21
+
+Installing or updating these plugins through `portal update --plugins-only`
+needs Portal 0.8.0. The skills themselves work with Portal 0.7.3 and with the
+remote MCP.
+
 ### Changed
 
 - `companions`: `/setup` now shows one page of the companion directory instead of implying a complete roster, says when more results exist, and explains how to browse teams and open a team's members. The skills filter by the task first, continue only when the shortlist is insufficient or the user asks for everything, and use `refs` for the shortlisted full profiles. The guidance follows the advertised tool schema, so it still works against an older `list_companions` that offers no `view` argument.
@@ -206,7 +212,8 @@ line. Compatible releases may advance each component's patch independently.
 - Commands: `/companions-balance`, `/companions-consult`, `/companions-discover`, `/companions-setup`. (`b5de196`)
 - CI workflow for automatic version bumping and a `bump-version.sh` script. (`b5de196`)
 
-[Unreleased]: https://github.com/neurowelt/companions/compare/v0.7.0...HEAD
+[Unreleased]: https://github.com/neurowelt/companions/compare/v0.8.0...HEAD
+[0.8.0]: https://github.com/neurowelt/companions/releases/tag/v0.8.0
 [0.7.0]: https://github.com/neurowelt/companions/releases/tag/v0.7.0
 [0.6.3]: https://github.com/neurowelt/companions/releases/tag/v0.6.3
 [0.6.2]: https://github.com/neurowelt/companions/releases/tag/v0.6.2
