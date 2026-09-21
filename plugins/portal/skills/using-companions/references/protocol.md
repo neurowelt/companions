@@ -2,6 +2,14 @@
 
 Only `consult` and `discover` bill; only `get_answer` returns run content. Every other tool feeds an existing job or reads the catalogue. `consult` only submits: it bills the run and returns a receipt with a `job_id`, never the answer.
 
+## Sending a history
+
+`consult` takes either `prompt` or `messages`, never both. `messages` is a chat history of `system`, `user` and `assistant` turns, each with text, whose last turn is the user's; it is sent to the API as given. Use `messages` when the user is continuing an exchange whose turns you already hold; use `prompt` for a single question.
+
+## Continuing a conversation
+
+After an `answer` or `parallel_with_main` run is collected, Portal keeps the thread locally. To continue it, call `consult` with `continue_from: <job_id>` and `prompt` as the next turn — not `messages`. It runs as `answer` with the same main; `model`, sampling and crumbs may be overridden; a different workspace, main or mode is refused. Against a Portal whose `consult` schema has no `continue_from`, start a fresh consult and carry the context in the prompt.
+
 Treat the response status as the next action:
 
 - `complete`: read the typed `content`, translate it for the user, and attribute it.

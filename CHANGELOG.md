@@ -9,6 +9,15 @@ line. Compatible releases may advance each component's patch independently.
 
 ## [Unreleased]
 
+## [0.8.1] - 2026-09-21
+
+`continue_from` needs Portal 0.8.1; `messages` on the remote MCP needs API 0.8.1. Against older servers the skills fall back to a fresh consult with the context in the prompt.
+
+### Added
+
+- `companions`: the consultation protocol explains sending a history — `consult` takes `prompt` or `messages` (system, user and assistant turns ending with the user's), never both — and when to prefer `messages` over restating an exchange.
+- `portal`: the same `messages` guidance, plus continuing a conversation: after an `answer` or `parallel_with_main` run, `consult` with `continue_from: <job_id>` and the next turn as `prompt` picks the stored thread up; `/consult` prefers it when the user follows up on an earlier answer.
+
 ## [0.8.0] - 2026-09-21
 
 Installing or updating these plugins through `portal update --plugins-only`
