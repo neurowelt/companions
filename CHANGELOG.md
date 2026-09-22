@@ -9,7 +9,7 @@ line. Compatible releases may advance each component's patch independently.
 
 ## [Unreleased]
 
-## [0.8.1] - 2026-09-21
+## [0.8.1] - 2026-09-22
 
 `continue_from` needs Portal 0.8.1; `messages` on the remote MCP needs API 0.8.1. Against older servers the skills fall back to a fresh consult with the context in the prompt.
 
@@ -221,7 +221,8 @@ remote MCP.
 - Commands: `/companions-balance`, `/companions-consult`, `/companions-discover`, `/companions-setup`. (`b5de196`)
 - CI workflow for automatic version bumping and a `bump-version.sh` script. (`b5de196`)
 
-[Unreleased]: https://github.com/neurowelt/companions/compare/v0.8.0...HEAD
+[Unreleased]: https://github.com/neurowelt/companions/compare/v0.8.1...HEAD
+[0.8.1]: https://github.com/neurowelt/companions/releases/tag/v0.8.1
 [0.8.0]: https://github.com/neurowelt/companions/releases/tag/v0.8.0
 [0.7.0]: https://github.com/neurowelt/companions/releases/tag/v0.7.0
 [0.6.3]: https://github.com/neurowelt/companions/releases/tag/v0.6.3
