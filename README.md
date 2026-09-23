@@ -7,8 +7,6 @@ Most importantly, you can start using Companions in any harness of your choice [
 > [!TIP]
 > For the best experience we recommend installing [Portal](#portal) – a small local MCP that connects to our service and handles tool calls for Companions.
 
-Make sure to check out our [Wiki page](https://github.com/neurowelt/companions/wiki/Companions) to learn about available Companions.
-
 ## Portal
 
 Companions Portal is a small binary running our MCP locally on your computer. It authenticates with our service and connects to your installed harnesses.
